@@ -1,4 +1,58 @@
+@import '../../index.scss';
+
 .mainchat {
-  background-color: lightgreen;
+  background-image: url('../../assets/images/background.png');
   flex: 8.4;
+  display: flex;
+  flex-direction: column;
+  &__header {
+    padding: 10px 16px;
+    background-color: $gray-200;
+    display: flex;
+    justify-content: space-between;
+    border-left: 1px solid #dadada;
+    img {
+      cursor: pointer;
+    }
+    button {
+      padding: 8px;
+      margin-left: 10px;
+    }
+
+    &__title {
+      display: flex;
+      &__text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 15px;
+        &__name {
+        }
+        &__description {
+          color: $black-200;
+          font-size: 13px;
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+
+  &__chatarea {
+    flex: 1;
+    overflow: auto;
+  }
+  &__footer {
+    height: 62px;
+    background-color: $gray-100;
+    border-left: 1px solid #dadada;
+    padding: 5px 10px;
+
+    display: flex;
+    align-items: center;
+
+    .button {
+      font-size: 26px;
+      color: $gray-400;
+    }
+  }
 }
