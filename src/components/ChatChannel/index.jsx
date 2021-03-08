@@ -4,9 +4,9 @@ import avatarPicture from 'assets/images/avatar.png';
 
 import './index.scss';
 
-function ChatChannel() {
+function ChatChannel({ className, ...props }) {
   return (
-    <div className='chatchannel'>
+    <div className={`chatchannel ${className}`}>
       <Avatar src={avatarPicture} />
       <div className='chatchannel__info'>
         <span className='chatchannel__info__name'>Lets Build a Futures</span>

@@ -40,7 +40,7 @@ function SideChat() {
       </div>
 
       <div className='sidechat__chatlist'>
-        <ChatChannel />
+        <ChatChannel className='active' />
         <ChatChannel />
         <ChatChannel />
         <ChatChannel />
