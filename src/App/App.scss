@@ -1,0 +1,27 @@
+@import 'index.scss';
+.app {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1396px;
+  background-color: $white;
+  height: 100vh;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+
+  display: flex;
+
+  @media (min-width: 1440px) {
+    margin: 20px auto;
+    height: 96vh;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-color: $accent-300;
+    height: 127px;
+    width: 100%;
+  }
+}
