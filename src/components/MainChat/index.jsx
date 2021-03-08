@@ -5,6 +5,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import avatarPicture from 'assets/images/avatar.png';
 import MoodIcon from '@material-ui/icons/Mood';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import MicIcon from '@material-ui/icons/Mic';
 import './index.scss';
 function MainChat() {
   return (
@@ -42,8 +43,19 @@ function MainChat() {
             <AttachFileIcon />
           </IconButton>
         </div>
-        <div className='mainchat__footer__input'></div>
-        <div className='mainchat__footer__righticon'></div>
+        <div className='mainchat__footer__input'>
+          <input
+            type='text'
+            name='message'
+            id='message'
+            placeholder='Type a message'
+          />
+        </div>
+        <div className='mainchat__footer__righticon'>
+          <IconButton>
+            <MicIcon />
+          </IconButton>
+        </div>
       </div>
     </div>
   );

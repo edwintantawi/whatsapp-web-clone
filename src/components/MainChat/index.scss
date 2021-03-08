@@ -21,13 +21,14 @@
 
     &__title {
       display: flex;
+      cursor: pointer;
       &__text {
         display: flex;
         flex-direction: column;
         justify-content: center;
         margin-left: 15px;
-        &__name {
-        }
+        // &__name {
+        // }
         &__description {
           color: $black-200;
           font-size: 13px;
@@ -53,6 +54,21 @@
     .button {
       font-size: 26px;
       color: $gray-400;
+    }
+
+    &__input {
+      flex: 1;
+      margin-right: 16px;
+      input {
+        padding: 13px 16px;
+        margin: 5px 10px;
+        border-radius: 99px;
+        border: none;
+        outline: none;
+        width: 100%;
+        font-size: 15px;
+        color: rgb(74, 74, 74);
+      }
     }
   }
 }
