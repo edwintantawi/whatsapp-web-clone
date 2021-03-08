@@ -1,4 +1,24 @@
+@import '../../index.scss';
+
 .sidechat {
   background-color: lightblue;
   flex: 3.6;
+
+  &__header {
+    padding: 10px 16px;
+    background-color: $gray-200;
+    display: flex;
+    justify-content: space-between;
+    button {
+      padding: 8px;
+      margin-left: 10px;
+    }
+    // .MuiSvgIcon-root {
+    //   font-size: 24px;
+    // }
+  }
+  &__search {
+  }
+  &__chatlist {
+  }
 }
