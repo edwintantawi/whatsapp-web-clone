@@ -3,9 +3,29 @@
 *::before {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-track {
+  background: hsla(0, 0%, 100%, 0.1);
+}
+
 body {
   font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
   font-size: 16px;
   background-color: $background;
+}
+
+.button {
+  font-size: 24px;
+  color: $gray-400;
 }

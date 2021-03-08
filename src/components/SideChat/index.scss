@@ -3,23 +3,52 @@
 .sidechat {
   background-color: lightblue;
   flex: 3.6;
-
+  overflow: hidden;
   &__header {
     padding: 10px 16px;
     background-color: $gray-200;
     display: flex;
     justify-content: space-between;
+    img {
+      cursor: pointer;
+    }
     button {
       padding: 8px;
       margin-left: 10px;
     }
-    .MuiSvgIcon-root {
-      font-size: 24px;
-      color: $gray-400;
-    }
   }
   &__search {
+    background-color: #f6f6f6;
+    display: grid;
+    place-items: center;
+    padding: 12px 20px;
+    &__input {
+      height: 35px;
+      background-color: $white;
+      padding: 0 32px 0 65px;
+      border-radius: 99px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+
+      input {
+        min-width: 280px;
+        outline: none;
+        border: none;
+        font-size: 15px;
+        color: rgb(74, 74, 74);
+      }
+      .MuiSvgIcon-root {
+        position: absolute;
+        left: 20px;
+        cursor: pointer;
+      }
+    }
   }
   &__chatlist {
+    height: 100%;
+    overflow: scroll;
+    padding-bottom: 115px;
   }
 }

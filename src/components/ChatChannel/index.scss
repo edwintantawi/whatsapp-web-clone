@@ -1,0 +1,31 @@
+@import '../../index.scss';
+
+.chatchannel {
+  background-color: $white;
+  display: flex;
+  align-items: center;
+
+  .MuiAvatar-root {
+    margin: 0 15px 0 13px;
+    width: 49px;
+    height: 49px;
+  }
+
+  &__info {
+    height: 72px;
+    width: 100%;
+    padding-right: 15px;
+    border-top: 1px solid #f2f2f2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &__name {
+      font-size: 17px;
+    }
+    &__lastchat {
+      color: $black-200;
+      font-size: 14px;
+    }
+  }
+}
