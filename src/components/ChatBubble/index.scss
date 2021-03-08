@@ -1,0 +1,56 @@
+@import '../../index.scss';
+
+.chatbubble {
+  padding: 0 6vw;
+  margin-bottom: 12px;
+
+  &.me {
+    .chatbubble__bubble {
+      margin-left: auto;
+      background-color: $accent-100;
+      border-radius: 8px 0 8px 8px;
+      .chatbubble__bubble__tail {
+        left: auto;
+        top: -1px;
+        right: -7px;
+        transform: scaleX(-1);
+        #tail-fill {
+          fill: $accent-100;
+        }
+      }
+    }
+  }
+
+  &__bubble {
+    background-color: $white;
+    width: fit-content;
+    max-width: 517px;
+    padding: 6px 50px 3px 9px;
+    border-radius: 0 8px 8px;
+    position: relative;
+
+    &__tail {
+      position: absolute;
+      left: -7px;
+      top: -1px;
+    }
+
+    &__name {
+      font-size: 13px;
+      margin-bottom: 3px;
+      color: #1f7aec;
+    }
+    &__text {
+      font-size: 14px;
+    }
+    &__status {
+      box-sizing: unset;
+      text-align: right;
+      width: calc(100% + 40px);
+      .time {
+        font-size: 11px;
+        color: $black-100;
+      }
+    }
+  }
+}

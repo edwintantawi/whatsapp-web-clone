@@ -7,6 +7,7 @@ import MoodIcon from '@material-ui/icons/Mood';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import MicIcon from '@material-ui/icons/Mic';
 import './index.scss';
+import ChatBubble from 'components/ChatBubble';
 function MainChat() {
   return (
     <div className='mainchat'>
@@ -32,7 +33,68 @@ function MainChat() {
         </div>
       </div>
 
-      <div className='mainchat__chatarea'></div>
+      <div className='mainchat__chatarea'>
+        <ChatBubble
+          username='David'
+          message='Hello, nice work very good and i like it'
+        />
+        <ChatBubble myMessage message='Thank you David' />
+        <ChatBubble username='David' message='Your Welcome' />
+        <ChatBubble
+          username='Ucup'
+          message='Hai i have an announcement for all, at 5pm we have a meet with client from Tokyo, japan. They will invest to our Startup'
+        />
+        <ChatBubble myMessage message='Wow nice lets prepare' />
+        <ChatBubble username='Wiliam' message='Wow Lets do it' />
+        <ChatBubble
+          username='David'
+          message='Hello, nice work very good and i like it'
+        />
+        <ChatBubble myMessage message='Thank you David' />
+        <ChatBubble username='David' message='Your Welcome' />
+        <ChatBubble
+          username='Ucup'
+          message='Hai i have an announcement for all, at 5pm we have a meet with client from Tokyo, japan. They will invest to our Startup'
+        />
+        <ChatBubble myMessage message='Wow nice lets prepare' />
+        <ChatBubble username='Wiliam' message='Wow Lets do it' />
+        <ChatBubble
+          username='David'
+          message='Hello, nice work very good and i like it'
+        />
+        <ChatBubble myMessage message='Thank you David' />
+        <ChatBubble username='David' message='Your Welcome' />
+        <ChatBubble
+          username='Ucup'
+          message='Hai i have an announcement for all, at 5pm we have a meet with client from Tokyo, japan. They will invest to our Startup'
+        />
+        <ChatBubble myMessage message='Wow nice lets prepare' />
+        <ChatBubble username='Wiliam' message='Wow Lets do it' />
+        <ChatBubble
+          username='David'
+          message='Hello, nice work very good and i like it'
+        />
+        <ChatBubble myMessage message='Thank you David' />
+        <ChatBubble username='David' message='Your Welcome' />
+        <ChatBubble
+          username='Ucup'
+          message='Hai i have an announcement for all, at 5pm we have a meet with client from Tokyo, japan. They will invest to our Startup'
+        />
+        <ChatBubble myMessage message='Wow nice lets prepare' />
+        <ChatBubble username='Wiliam' message='Wow Lets do it' />
+        <ChatBubble
+          username='David'
+          message='Hello, nice work very good and i like it'
+        />
+        <ChatBubble myMessage message='Thank you David' />
+        <ChatBubble username='David' message='Your Welcome' />
+        <ChatBubble
+          username='Ucup'
+          message='Hai i have an announcement for all, at 5pm we have a meet with client from Tokyo, japan. They will invest to our Startup'
+        />
+        <ChatBubble myMessage message='Wow nice lets prepare' />
+        <ChatBubble username='Wiliam' message='Wow Lets do it' />
+      </div>
 
       <div className='mainchat__footer'>
         <div className='mainchat__footer__lefticon'>
