@@ -34,6 +34,38 @@
 
     &__name {
       font-size: 17px;
+      display: inline-block;
+      white-space: nowrap;
+      max-width: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      @media (min-width: 120px) {
+        max-width: 100px;
+      }
+      @media (min-width: 220px) {
+        max-width: 150px;
+      }
+      @media (min-width: 320px) {
+        max-width: 200px;
+      }
+      @media (min-width: 380px) {
+        max-width: 300px;
+      }
+      @media (min-width: 450px) {
+        max-width: 350px;
+      }
+      @media (min-width: 500px) {
+        max-width: 100%;
+      }
+      @media (min-width: 885px) {
+        max-width: 150px;
+      }
+      @media (min-width: 1150px) {
+        max-width: 250px;
+      }
+      @media (min-width: 1390px) {
+        max-width: 300px;
+      }
     }
     &__lastchat {
       color: $black-200;

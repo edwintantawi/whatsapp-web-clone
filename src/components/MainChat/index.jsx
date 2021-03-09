@@ -62,14 +62,6 @@ function MainChat() {
                 type: actionTypes.SET_INCHAT,
                 inChat: false,
               });
-              console.log(inChat);
-              // const side = document.querySelector('.sidechat');
-              // const main = document.querySelector('.mainchat');
-              // const back = document.querySelector('#back');
-              // main.style.flex = '0';
-              // main.style.display = 'none';
-              // side.style.flex = '1';
-              // side.style.display = 'block';
             }}
           >
             <IconButton>

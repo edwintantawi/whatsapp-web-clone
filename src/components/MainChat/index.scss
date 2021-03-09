@@ -8,7 +8,6 @@
 
   &.active {
     display: flex;
-    // flex: 0;
     width: 100%;
   }
 
@@ -47,13 +46,54 @@
     &__title {
       display: flex;
       cursor: pointer;
+      flex: 1;
+
       &__text {
         display: flex;
         flex-direction: column;
         justify-content: center;
         margin-left: 15px;
-        // &__name {
-        // }
+        flex: 1;
+
+        &__name,
+        &__description {
+          display: inline-block;
+          white-space: nowrap;
+          max-width: 50px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          @media (min-width: 320px) {
+            max-width: 80px;
+          }
+          @media (min-width: 390px) {
+            max-width: 100px;
+          }
+          @media (min-width: 440px) {
+            max-width: 190px;
+          }
+          @media (min-width: 460px) {
+            max-width: 210px;
+          }
+          @media (min-width: 510px) {
+            max-width: 250px;
+          }
+          @media (min-width: 540px) {
+            max-width: 280px;
+          }
+          @media (min-width: 580px) {
+            max-width: 330px;
+          }
+          @media (min-width: 645px) {
+            max-width: 370px;
+          }
+          @media (min-width: 700px) {
+            max-width: 400px;
+          }
+          @media (min-width: 740px) {
+            max-width: 450px;
+          }
+        }
         &__description {
           color: $black-200;
           font-size: 13px;
