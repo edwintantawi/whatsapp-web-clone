@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import firebase from 'firebase/app';
 import { Avatar, IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -8,7 +9,46 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 import MicIcon from '@material-ui/icons/Mic';
 import './index.scss';
 import ChatBubble from 'components/ChatBubble';
+import { useParams } from 'react-router-dom';
+import { db } from 'services/firebase';
+import { useStateValue } from 'context/stateProvider';
+
 function MainChat() {
+  const { roomid } = useParams();
+  const [roomName, setRoomName] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [{ user }] = useStateValue();
+  const [messageInput, setInput] = useState('');
+
+  useEffect(() => {
+    if (roomid) {
+      db.collection('rooms')
+        .doc(roomid)
+        .onSnapshot((snapShot) => {
+          setRoomName(snapShot.data().name);
+        });
+
+      db.collection('rooms')
+        .doc(roomid)
+        .collection('messages')
+        .orderBy('timestamp', 'asc')
+        .onSnapshot((snapShot) => {
+          setMessages(snapShot.docs.map((doc) => doc.data()));
+        });
+    }
+  }, [roomid]);
+
+  const sendMessage = () => {
+    if (messageInput !== '') {
+      db.collection('rooms').doc(roomid).collection('messages').add({
+        email: user.email,
+        name: user.displayName,
+        message: messageInput,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+  };
+
   return (
     <div className='mainchat'>
       <div className='mainchat__header'>
@@ -16,7 +56,7 @@ function MainChat() {
           <Avatar alt='Your Avatar' src={avatarPicture} />
           <div className='mainchat__header__title__text'>
             <span className='mainchat__header__title__text__name'>
-              Lets Build a Futures
+              {roomName}
             </span>
             <span className='mainchat__header__title__text__description'>
               Me, 0828347912234, 823174902317, 238174092319
@@ -34,66 +74,28 @@ function MainChat() {
       </div>
 
       <div className='mainchat__chatarea'>
-        <ChatBubble
-          username='David'
-          message='Hello, nice work very good and i like it'
-        />
-        <ChatBubble myMessage message='Thank you David' />
-        <ChatBubble username='David' message='Your Welcome' />
-        <ChatBubble
-          username='Ucup'
-          message='Hai i have an announcement for all, at 5pm we have a meet with client from Tokyo, japan. They will invest to our Startup'
-        />
-        <ChatBubble myMessage message='Wow nice lets prepare' />
-        <ChatBubble username='Wiliam' message='Wow Lets do it' />
-        <ChatBubble
-          username='David'
-          message='Hello, nice work very good and i like it'
-        />
-        <ChatBubble myMessage message='Thank you David' />
-        <ChatBubble username='David' message='Your Welcome' />
-        <ChatBubble
-          username='Ucup'
-          message='Hai i have an announcement for all, at 5pm we have a meet with client from Tokyo, japan. They will invest to our Startup'
-        />
-        <ChatBubble myMessage message='Wow nice lets prepare' />
-        <ChatBubble username='Wiliam' message='Wow Lets do it' />
-        <ChatBubble
-          username='David'
-          message='Hello, nice work very good and i like it'
-        />
-        <ChatBubble myMessage message='Thank you David' />
-        <ChatBubble username='David' message='Your Welcome' />
-        <ChatBubble
-          username='Ucup'
-          message='Hai i have an announcement for all, at 5pm we have a meet with client from Tokyo, japan. They will invest to our Startup'
-        />
-        <ChatBubble myMessage message='Wow nice lets prepare' />
-        <ChatBubble username='Wiliam' message='Wow Lets do it' />
-        <ChatBubble
-          username='David'
-          message='Hello, nice work very good and i like it'
-        />
-        <ChatBubble myMessage message='Thank you David' />
-        <ChatBubble username='David' message='Your Welcome' />
-        <ChatBubble
-          username='Ucup'
-          message='Hai i have an announcement for all, at 5pm we have a meet with client from Tokyo, japan. They will invest to our Startup'
-        />
-        <ChatBubble myMessage message='Wow nice lets prepare' />
-        <ChatBubble username='Wiliam' message='Wow Lets do it' />
-        <ChatBubble
-          username='David'
-          message='Hello, nice work very good and i like it'
-        />
-        <ChatBubble myMessage message='Thank you David' />
-        <ChatBubble username='David' message='Your Welcome' />
-        <ChatBubble
-          username='Ucup'
-          message='Hai i have an announcement for all, at 5pm we have a meet with client from Tokyo, japan. They will invest to our Startup'
-        />
-        <ChatBubble myMessage message='Wow nice lets prepare' />
-        <ChatBubble username='Wiliam' message='Wow Lets do it' />
+        {messages.map((message, idx) => (
+          <ChatBubble
+            key={idx}
+            username={message.name}
+            message={message.message}
+            // timestamp={new Date(message.timestamp?.seconds).toDateString()}
+            timestamp={`${new Date(message.timestamp?.seconds * 1000)
+              .getHours()
+              .toLocaleString()}${
+              new Date(message.timestamp?.seconds * 1000)
+                .getMinutes()
+                .toLocaleString() < 10
+                ? ' : 0'
+                : ' :'
+            }${
+              new Date(message.timestamp?.seconds * 1000)
+                .getMinutes()
+                .toLocaleString() || ''
+            }`}
+            myMessage={message.email === user.email ? true : false}
+          />
+        ))}
       </div>
 
       <div className='mainchat__footer'>
@@ -111,6 +113,15 @@ function MainChat() {
             name='message'
             id='message'
             placeholder='Type a message'
+            value={messageInput}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyUp={(e) => {
+              if (e.keyCode === 13) {
+                e.preventDefault();
+                sendMessage();
+                setInput('');
+              }
+            }}
           />
         </div>
         <div className='mainchat__footer__righticon'>

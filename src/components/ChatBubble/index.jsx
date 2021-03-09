@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.scss';
 
-function ChatBubble({ myMessage, username, message }) {
+function ChatBubble({ myMessage, username, message, timestamp }) {
   return (
     <div className={`chatbubble ${myMessage ? 'me' : ''}`}>
       <div className='chatbubble__bubble'>
@@ -30,7 +30,7 @@ function ChatBubble({ myMessage, username, message }) {
         </div>
         <div className='chatbubble__bubble__text'>{message}</div>
         <div className='chatbubble__bubble__status'>
-          <span className='time'>21:22</span>
+          <span className='time'>{timestamp}</span>
         </div>
       </div>
     </div>

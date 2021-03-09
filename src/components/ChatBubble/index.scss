@@ -11,7 +11,7 @@
       border-radius: 8px 0 8px 8px;
       .chatbubble__bubble__tail {
         left: auto;
-        top: -1px;
+        top: -1.7px;
         right: -7px;
         transform: scaleX(-1);
         #tail-fill {
@@ -32,7 +32,7 @@
     &__tail {
       position: absolute;
       left: -7px;
-      top: -1px;
+      top: -1.7px;
     }
 
     &__name {
@@ -42,6 +42,7 @@
     }
     &__text {
       font-size: 14px;
+      overflow-wrap: break-word;
     }
     &__status {
       box-sizing: unset;
