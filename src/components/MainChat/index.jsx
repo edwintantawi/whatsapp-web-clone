@@ -7,6 +7,7 @@ import avatarPicture from 'assets/images/avatar.png';
 import MoodIcon from '@material-ui/icons/Mood';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import MicIcon from '@material-ui/icons/Mic';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import './index.scss';
 import ChatBubble from 'components/ChatBubble';
 import { useParams } from 'react-router-dom';
@@ -53,6 +54,11 @@ function MainChat() {
     <div className='mainchat'>
       <div className='mainchat__header'>
         <div className='mainchat__header__title'>
+          <div id='back'>
+            <IconButton>
+              <KeyboardBackspaceIcon />
+            </IconButton>
+          </div>
           <Avatar alt='Your Avatar' src={avatarPicture} />
           <div className='mainchat__header__title__text'>
             <span className='mainchat__header__title__text__name'>

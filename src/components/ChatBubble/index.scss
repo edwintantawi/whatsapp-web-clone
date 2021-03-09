@@ -1,13 +1,13 @@
 @import '../../index.scss';
 
 .chatbubble {
-  padding: 0 16px;
+  // padding: 0 16px;
+  padding: 0 6vw;
   margin-bottom: 12px;
-  width: 100%;
+  // width: 100%;
 
-  @media (min-width: 595px) {
-    padding: 0 6vw;
-  }
+  // @media (min-width: 595px) {
+  // }
 
   &.me {
     .chatbubble__bubble {
@@ -28,7 +28,7 @@
 
   &__bubble {
     background-color: $white;
-    width: 60%;
+    width: 90%;
     max-width: 517px;
     padding: 6px 50px 3px 9px;
     border-radius: 0 8px 8px;
