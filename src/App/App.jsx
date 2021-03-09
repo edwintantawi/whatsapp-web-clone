@@ -6,9 +6,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import './App.scss';
 import { useStateValue } from 'context/stateProvider';
+import Lobby from 'components/Lobby';
 
 function App() {
   const [{ user }] = useStateValue();
+  console.log(user);
   return (
     <div className='app'>
       {!user ? (
@@ -22,7 +24,7 @@ function App() {
               <MainChat />
             </Route>
             <Route path='/'>
-              <MainChat />
+              <Lobby />
             </Route>
           </Switch>
         </Router>

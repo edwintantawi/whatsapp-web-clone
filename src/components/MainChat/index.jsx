@@ -86,8 +86,8 @@ function MainChat() {
               new Date(message.timestamp?.seconds * 1000)
                 .getMinutes()
                 .toLocaleString() < 10
-                ? ' : 0'
-                : ' :'
+                ? ':0'
+                : ':'
             }${
               new Date(message.timestamp?.seconds * 1000)
                 .getMinutes()

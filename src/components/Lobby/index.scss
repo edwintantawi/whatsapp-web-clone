@@ -1,0 +1,37 @@
+.lobby {
+  flex: 0;
+  display: flex;
+  flex-direction: column;
+  display: none;
+  background-color: #f8f9fb;
+  justify-content: center;
+  align-items: center;
+
+  .wraper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 460px;
+    text-align: center;
+    img {
+      width: 80%;
+      max-width: 364px;
+    }
+    h1 {
+      font-size: 36px;
+      font-weight: 300;
+      margin-top: 38px;
+      color: #525252;
+    }
+    p {
+      font-size: 14px;
+      margin-top: 24px;
+      color: #888a89;
+      font-weight: 200;
+    }
+  }
+  @media (min-width: 885px) {
+    flex: 8.4;
+    display: flex;
+  }
+}

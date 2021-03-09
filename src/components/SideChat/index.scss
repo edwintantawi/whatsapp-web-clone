@@ -1,8 +1,13 @@
 @import '../../index.scss';
 
 .sidechat {
-  flex: 3.6;
+  flex: 1;
   overflow: hidden;
+
+  @media (min-width: 885px) {
+    flex: 3.6;
+  }
+
   &__header {
     padding: 10px 16px;
     background-color: $gray-200;

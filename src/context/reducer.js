@@ -9,6 +9,7 @@ export const actionTypes = {
 const reducer = (state, action) => {
   switch (action.type) {
     case actionTypes.SET_USER:
+      window.localStorage.setItem('user', true);
       return {
         ...state,
         user: action.user,
