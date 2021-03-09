@@ -11,7 +11,8 @@ import './index.scss';
 
 function SideChat() {
   const [rooms, setRooms] = useState([]);
-  const [{ user }] = useStateValue();
+  const [{ user, inChat }] = useStateValue();
+  console.log(inChat);
 
   useEffect(() => {
     db.collection('rooms').onSnapshot((snapShot) => {
@@ -25,7 +26,7 @@ function SideChat() {
   }, []);
 
   return (
-    <div className='sidechat'>
+    <div className={`sidechat ${inChat ? '' : 'active'}`}>
       <div className='sidechat__header'>
         <Avatar alt='Your Avatar' src={user.photoURL} />
         <div className='sidechat__header__icons'>

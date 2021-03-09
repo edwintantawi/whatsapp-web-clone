@@ -13,12 +13,13 @@ import ChatBubble from 'components/ChatBubble';
 import { useParams } from 'react-router-dom';
 import { db } from 'services/firebase';
 import { useStateValue } from 'context/stateProvider';
+import { actionTypes } from 'context/reducer';
 
 function MainChat() {
   const { roomid } = useParams();
   const [roomName, setRoomName] = useState('');
   const [messages, setMessages] = useState([]);
-  const [{ user }] = useStateValue();
+  const [{ user, inChat }, dispatch] = useStateValue();
   const [messageInput, setInput] = useState('');
 
   useEffect(() => {
@@ -51,10 +52,26 @@ function MainChat() {
   };
 
   return (
-    <div className='mainchat'>
+    <div className={`mainchat ${inChat ? 'active' : ''}`}>
       <div className='mainchat__header'>
         <div className='mainchat__header__title'>
-          <div id='back'>
+          <div
+            id='back'
+            onClick={() => {
+              dispatch({
+                type: actionTypes.SET_INCHAT,
+                inChat: false,
+              });
+              console.log(inChat);
+              // const side = document.querySelector('.sidechat');
+              // const main = document.querySelector('.mainchat');
+              // const back = document.querySelector('#back');
+              // main.style.flex = '0';
+              // main.style.display = 'none';
+              // side.style.flex = '1';
+              // side.style.display = 'block';
+            }}
+          >
             <IconButton>
               <KeyboardBackspaceIcon />
             </IconButton>
@@ -65,7 +82,7 @@ function MainChat() {
               {roomName}
             </span>
             <span className='mainchat__header__title__text__description'>
-              Me, 0828347912234, 823174902317, 238174092319
+              last seen today
             </span>
           </div>
         </div>

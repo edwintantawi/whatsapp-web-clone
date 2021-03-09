@@ -2,15 +2,19 @@
 
 .mainchat {
   background-image: url('../../assets/images/background.png');
-  flex: none;
-  display: flex;
-  flex-direction: column;
   display: none;
+  flex-direction: column;
   width: 100%;
 
-  @media (min-width: 885px) {
-    flex: 8.4;
+  &.active {
     display: flex;
+    // flex: 0;
+    width: 100%;
+  }
+
+  @media (min-width: 885px) {
+    display: flex;
+    flex: 8.4;
   }
 
   &__header {
@@ -27,9 +31,13 @@
       margin-left: 10px;
     }
     #back {
-      display: none;
+      display: flex;
       align-items: center;
       margin-right: 18px;
+
+      @media (min-width: 885px) {
+        display: none;
+      }
 
       button {
         margin-left: 0;

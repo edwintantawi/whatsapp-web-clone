@@ -28,14 +28,14 @@
 
   &__bubble {
     background-color: $white;
-    width: 90%;
-    max-width: 517px;
+    width: fit-content;
+    max-width: 90%;
     padding: 6px 50px 3px 9px;
     border-radius: 0 8px 8px;
     position: relative;
 
     @media (min-width: 595px) {
-      width: fit-content;
+      max-width: 517px;
     }
 
     &__tail {

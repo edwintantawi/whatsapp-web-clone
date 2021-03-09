@@ -6,8 +6,11 @@ import avatarPicture from 'assets/images/avatar.png';
 
 import './index.scss';
 import { db } from 'services/firebase';
+import { useStateValue } from 'context/stateProvider';
+import { actionTypes } from 'context/reducer';
 
 function ChatChannel({ className, id, name }) {
+  const [, dispatch] = useStateValue();
   const [lastMessage, setLastMessage] = useState({
     from: 'whatsapp',
     message: 'Start Message Now...',
@@ -25,20 +28,10 @@ function ChatChannel({ className, id, name }) {
 
   const mobileHandleClick = () => {
     if (window.innerWidth < 885) {
-      const side = document.querySelector('.sidechat');
-      const main = document.querySelector('.mainchat');
-      const back = document.querySelector('#back');
-      back.style.display = 'flex';
-      back.addEventListener('click', () => {
-        main.style.flex = '0';
-        main.style.display = 'none';
-        side.style.flex = '1';
-        side.style.display = 'block';
+      dispatch({
+        type: actionTypes.SET_INCHAT,
+        inChat: true,
       });
-      side.style.flex = '0';
-      side.style.display = 'none';
-      main.style.flex = '1';
-      main.style.display = 'flex';
     }
   };
 
