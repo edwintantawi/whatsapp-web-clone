@@ -8,7 +8,6 @@ const Lobby = () => {
   const [image, setImage] = useState({});
 
   useEffect(() => {
-    console.log(image);
     const ref = storage.ref();
     const task = ref.child('inigambar').put(image, '');
     task.then(() => {

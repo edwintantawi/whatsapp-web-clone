@@ -9,7 +9,7 @@ import { db } from 'services/firebase';
 import { useStateValue } from 'context/stateProvider';
 import { actionTypes } from 'context/reducer';
 
-function ChatChannel({ className, id, name, avatar }) {
+function ChatChannel({ className, id, name, avatar, isFriend }) {
   const [{ user }, dispatch] = useStateValue();
   const [lastMessage, setLastMessage] = useState({
     from: 'whatsapp',
@@ -37,7 +37,7 @@ function ChatChannel({ className, id, name, avatar }) {
 
   return (
     <Link
-      to={`/room/${id}`}
+      to={!isFriend ? `/room/${id}` : ''}
       className={`chatchannel`}
       id={id}
       onClick={mobileHandleClick}
@@ -46,9 +46,13 @@ function ChatChannel({ className, id, name, avatar }) {
       <div className='chatchannel__info'>
         <span className='chatchannel__info__name'>{name}</span>
         <span className='chatchannel__info__lastchat'>
-          {`${
-            lastMessage[0]?.email === user.email ? 'you' : lastMessage[0]?.name
-          }: ${lastMessage[0]?.message}`}
+          {!isFriend
+            ? `${
+                lastMessage[0]?.email === user.email
+                  ? 'you'
+                  : lastMessage[0]?.name
+              }: ${lastMessage[0]?.message}`
+            : null}
         </span>
       </div>
     </Link>
