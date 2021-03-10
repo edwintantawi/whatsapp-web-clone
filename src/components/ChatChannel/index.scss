@@ -55,7 +55,19 @@
         max-width: 350px;
       }
       @media (min-width: 500px) {
-        max-width: 100%;
+        max-width: 400px;
+      }
+      @media (min-width: 600px) {
+        max-width: 450px;
+      }
+      @media (min-width: 650px) {
+        max-width: 550px;
+      }
+      @media (min-width: 750px) {
+        max-width: 600px;
+      }
+      @media (min-width: 850px) {
+        max-width: 650px;
       }
       @media (min-width: 885px) {
         max-width: 150px;
@@ -70,13 +82,50 @@
     &__lastchat {
       color: $black-200;
       font-size: 14px;
-      display: block;
-      display: -webkit-box;
+      display: inline-block;
+      white-space: nowrap;
+      max-width: 10px;
       overflow: hidden;
       text-overflow: ellipsis;
-      line-clamp: 2;
-      box-orient: vertical;
-      max-height: 32px;
+      @media (min-width: 120px) {
+        max-width: 100px;
+      }
+      @media (min-width: 220px) {
+        max-width: 150px;
+      }
+      @media (min-width: 320px) {
+        max-width: 200px;
+      }
+      @media (min-width: 380px) {
+        max-width: 300px;
+      }
+      @media (min-width: 450px) {
+        max-width: 350px;
+      }
+      @media (min-width: 500px) {
+        max-width: 400px;
+      }
+      @media (min-width: 600px) {
+        max-width: 450px;
+      }
+      @media (min-width: 650px) {
+        max-width: 550px;
+      }
+      @media (min-width: 750px) {
+        max-width: 600px;
+      }
+      @media (min-width: 850px) {
+        max-width: 650px;
+      }
+      @media (min-width: 885px) {
+        max-width: 150px;
+      }
+      @media (min-width: 1150px) {
+        max-width: 250px;
+      }
+      @media (min-width: 1390px) {
+        max-width: 300px;
+      }
     }
   }
 }
