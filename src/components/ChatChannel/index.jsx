@@ -10,7 +10,7 @@ import { useStateValue } from 'context/stateProvider';
 import { actionTypes } from 'context/reducer';
 
 function ChatChannel({ className, id, name, avatar }) {
-  const [, dispatch] = useStateValue();
+  const [{ user }, dispatch] = useStateValue();
   const [lastMessage, setLastMessage] = useState({
     from: 'whatsapp',
     message: 'Start Message Now...',
@@ -46,7 +46,9 @@ function ChatChannel({ className, id, name, avatar }) {
       <div className='chatchannel__info'>
         <span className='chatchannel__info__name'>{name}</span>
         <span className='chatchannel__info__lastchat'>
-          {`${lastMessage[0]?.name}: ${lastMessage[0]?.message}`}
+          {`${
+            lastMessage[0]?.email === user.email ? 'you' : lastMessage[0]?.name
+          }: ${lastMessage[0]?.message}`}
         </span>
       </div>
     </Link>
