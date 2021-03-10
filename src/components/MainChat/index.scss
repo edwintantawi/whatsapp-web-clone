@@ -22,6 +22,14 @@
     display: flex;
     justify-content: space-between;
     border-left: 1px solid #dadada;
+    width: 100%;
+    position: fixed;
+    z-index: 9;
+    top: 0;
+    @media (min-width: 885px) {
+      position: unset;
+    }
+
     img {
       cursor: pointer;
     }
@@ -32,7 +40,7 @@
     #back {
       display: flex;
       align-items: center;
-      margin-right: 18px;
+      margin-right: 8px;
 
       @media (min-width: 885px) {
         display: none;
@@ -40,6 +48,7 @@
 
       button {
         margin-left: 0;
+        padding: 6px;
       }
     }
 
@@ -63,11 +72,17 @@
           overflow: hidden;
           text-overflow: ellipsis;
 
-          @media (min-width: 320px) {
-            max-width: 80px;
+          @media (min-width: 250px) {
+            max-width: 50px;
+          }
+          @media (min-width: 300px) {
+            max-width: 70px;
+          }
+          @media (min-width: 350px) {
+            max-width: 120px;
           }
           @media (min-width: 390px) {
-            max-width: 100px;
+            max-width: 150px;
           }
           @media (min-width: 440px) {
             max-width: 190px;
@@ -106,20 +121,39 @@
   &__chatarea {
     flex: 1;
     overflow: auto;
-    padding-top: 50px;
+    padding-top: 100px;
+    @media (min-width: 885px) {
+      padding-top: 50px;
+    }
   }
   &__footer {
     height: 62px;
     background-color: $gray-100;
     border-left: 1px solid #dadada;
     padding: 5px 10px;
-
+    width: 100%;
     display: flex;
     align-items: center;
+
+    position: fixed;
+    bottom: 0;
+    @media (min-width: 885px) {
+      position: unset;
+    }
 
     .button {
       font-size: 26px;
       color: $gray-400;
+    }
+
+    &__lefticon,
+    &__righticon {
+      button {
+        padding: 6px;
+        @media (min-width: 600px) {
+          padding: 12px;
+        }
+      }
     }
 
     &__input {

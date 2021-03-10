@@ -10,6 +10,7 @@ const Auth = () => {
     <div className='login-buttons'>
       <div className='wrap'>
         <h1>Whatsapp Web Clone</h1>
+        <p>Powered by: ReactJS, MaterialUI, Firebase</p>
         <button
           className='login-provider-button'
           onClick={() => {

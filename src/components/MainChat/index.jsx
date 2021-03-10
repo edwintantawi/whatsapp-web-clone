@@ -57,6 +57,18 @@ function MainChat() {
     }
   };
 
+  const handleTimestamp = (data) => {
+    let newTimestamp = '';
+    const time = new Date(data?.timestamp?.seconds * 1000);
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    hours < 10 ? (newTimestamp += `0${hours}`) : (newTimestamp += hours);
+    newTimestamp += ':';
+    minutes < 10 ? (newTimestamp += `0${minutes}`) : (newTimestamp += minutes);
+
+    return newTimestamp;
+  };
+
   return (
     <div className={`mainchat ${inChat ? 'active' : ''}`}>
       <div className='mainchat__header'>
@@ -80,7 +92,7 @@ function MainChat() {
               {roomName}
             </span>
             <span className='mainchat__header__title__text__description'>
-              last seen today
+              {`last seen at ${handleTimestamp(messages[messages.length - 1])}`}
             </span>
           </div>
         </div>
@@ -100,19 +112,7 @@ function MainChat() {
             key={idx}
             username={message.name}
             message={message.message}
-            timestamp={`${new Date(message.timestamp?.seconds * 1000)
-              .getHours()
-              .toLocaleString()}${
-              new Date(message.timestamp?.seconds * 1000)
-                .getMinutes()
-                .toLocaleString() < 10
-                ? ':0'
-                : ':'
-            }${
-              new Date(message.timestamp?.seconds * 1000)
-                .getMinutes()
-                .toLocaleString() || ''
-            }`}
+            timestamp={handleTimestamp(message)}
             myMessage={message.email === user.email ? true : false}
           />
         ))}
