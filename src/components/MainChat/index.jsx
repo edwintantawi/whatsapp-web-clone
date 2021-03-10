@@ -24,7 +24,7 @@ function MainChat() {
   const chatArea = useRef(null);
 
   useEffect(() => {
-    chatArea.current.scrollTo(0, chatArea.current.scrollHeight);
+    chatArea.current.scrollTo(0, chatArea.current.scrollHeight + 62);
   });
 
   useEffect(() => {
