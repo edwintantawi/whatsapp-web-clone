@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
 
-import avatarPicture from 'assets/images/avatar.png';
+// import avatarPicture from 'assets/images/avatar.png';
 
 import './index.scss';
 import { db } from 'services/firebase';
 import { useStateValue } from 'context/stateProvider';
 import { actionTypes } from 'context/reducer';
 
-function ChatChannel({ className, id, name }) {
+function ChatChannel({ className, id, name, avatar }) {
   const [, dispatch] = useStateValue();
   const [lastMessage, setLastMessage] = useState({
     from: 'whatsapp',
@@ -42,7 +42,7 @@ function ChatChannel({ className, id, name }) {
       id={id}
       onClick={mobileHandleClick}
     >
-      <Avatar src={avatarPicture} />
+      <Avatar src={avatar} />
       <div className='chatchannel__info'>
         <span className='chatchannel__info__name'>{name}</span>
         <span className='chatchannel__info__lastchat'>

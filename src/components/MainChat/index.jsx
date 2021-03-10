@@ -18,6 +18,7 @@ import { actionTypes } from 'context/reducer';
 function MainChat() {
   const { roomid } = useParams();
   const [roomName, setRoomName] = useState('');
+  const [roomAvatar, setRoomAvatar] = useState('');
   const [messages, setMessages] = useState([]);
   const [{ user, inChat }, dispatch] = useStateValue();
   const [messageInput, setInput] = useState('');
@@ -33,6 +34,7 @@ function MainChat() {
         .doc(roomid)
         .onSnapshot((snapShot) => {
           setRoomName(snapShot.data().name);
+          setRoomAvatar(snapShot.data().avatar);
         });
 
       db.collection('rooms')
@@ -73,7 +75,7 @@ function MainChat() {
               <KeyboardBackspaceIcon />
             </IconButton>
           </div>
-          <Avatar alt='Your Avatar' src={avatarPicture} />
+          <Avatar alt='Your Avatar' src={roomAvatar} />
           <div className='mainchat__header__title__text'>
             <span className='mainchat__header__title__text__name'>
               {roomName}

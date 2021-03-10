@@ -11,7 +11,7 @@ const Lobby = () => {
     console.log(image);
     const ref = storage.ref();
     const task = ref.child('inigambar').put(image, '');
-    task.then((snapShot) => {
+    task.then(() => {
       storage
         .ref('inigambar')
         .getDownloadURL()

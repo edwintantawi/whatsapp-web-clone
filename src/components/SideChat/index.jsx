@@ -59,7 +59,7 @@ function SideChat() {
             key={room.id}
             id={room.id}
             name={room.data.name}
-            image={room.data.image}
+            avatar={room.data.avatar}
           />
         ))}
       </div>
