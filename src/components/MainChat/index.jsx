@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import firebase from 'firebase/app';
 import { Avatar, IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
@@ -21,6 +21,11 @@ function MainChat() {
   const [messages, setMessages] = useState([]);
   const [{ user, inChat }, dispatch] = useStateValue();
   const [messageInput, setInput] = useState('');
+  const chatArea = useRef(null);
+
+  useEffect(() => {
+    chatArea.current.scrollTo(0, chatArea.current.scrollHeight);
+  });
 
   useEffect(() => {
     if (roomid) {
@@ -88,13 +93,12 @@ function MainChat() {
         </div>
       </div>
 
-      <div className='mainchat__chatarea'>
+      <div className='mainchat__chatarea' ref={chatArea}>
         {messages.map((message, idx) => (
           <ChatBubble
             key={idx}
             username={message.name}
             message={message.message}
-            // timestamp={new Date(message.timestamp?.seconds).toDateString()}
             timestamp={`${new Date(message.timestamp?.seconds * 1000)
               .getHours()
               .toLocaleString()}${

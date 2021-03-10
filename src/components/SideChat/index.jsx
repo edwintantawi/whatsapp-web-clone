@@ -12,7 +12,6 @@ import './index.scss';
 function SideChat() {
   const [rooms, setRooms] = useState([]);
   const [{ user, inChat }] = useStateValue();
-  console.log(inChat);
 
   useEffect(() => {
     db.collection('rooms').onSnapshot((snapShot) => {

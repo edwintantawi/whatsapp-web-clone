@@ -10,7 +10,6 @@ import Lobby from 'components/Lobby';
 
 function App() {
   const [{ user }] = useStateValue();
-  console.log(user);
   return (
     <div className='app'>
       {!user ? (
