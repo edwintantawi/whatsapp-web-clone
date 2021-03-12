@@ -28,6 +28,7 @@ function MainChat() {
   });
 
   useEffect(() => {
+    console.log('effect in main chat is working', roomid);
     if (roomid) {
       db.collection('rooms')
         .doc(roomid)
@@ -36,13 +37,18 @@ function MainChat() {
           setRoomAvatar(snapShot.data().avatar);
         });
 
-      db.collection('rooms')
+      const unSubscribedMessage = db
+        .collection('rooms')
         .doc(roomid)
         .collection('messages')
         .orderBy('timestamp', 'asc')
-        .onSnapshot((snapShot) => {
-          setMessages(snapShot.docs.map((doc) => doc.data()));
-        });
+        .onSnapshot((snapShot) =>
+          setMessages(snapShot.docs.map((doc) => doc.data()))
+        );
+
+      return () => {
+        unSubscribedMessage();
+      };
     }
   }, [roomid]);
 
