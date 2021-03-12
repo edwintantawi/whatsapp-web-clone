@@ -30,7 +30,8 @@ function MainChat() {
   useEffect(() => {
     console.log('effect in main chat is working', roomid);
     if (roomid) {
-      db.collection('rooms')
+      const unSubscribedRoomHeader = db
+        .collection('rooms')
         .doc(roomid)
         .onSnapshot((snapShot) => {
           setRoomName(snapShot.data().name);
@@ -48,6 +49,7 @@ function MainChat() {
 
       return () => {
         unSubscribedMessage();
+        unSubscribedRoomHeader();
       };
     }
   }, [roomid]);
