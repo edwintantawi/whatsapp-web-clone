@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import phone from 'assets/images/phone.png';
 import './index.scss';
-import { storage } from 'services/firebase';
+// import { storage } from 'services/firebase';
 
 const Lobby = () => {
-  const [image, setImage] = useState({});
+  // const [image, setImage] = useState({});
 
-  useEffect(() => {
-    const ref = storage.ref();
-    const task = ref.child('inigambar').put(image, '');
-    task.then(() => {
-      storage
-        .ref('inigambar')
-        .getDownloadURL()
-        .then(function (url) {
-          console.log(url);
-        });
-    });
-  }, [image]);
+  // useEffect(() => {
+  //   const ref = storage.ref();
+  //   const task = ref.child('inigambar').put(image, '');
+  //   task.then(() => {
+  //     storage
+  //       .ref('inigambar')
+  //       .getDownloadURL()
+  //       .then(function (url) {
+  //         console.log(url);
+  //       });
+  //   });
+  // }, [image]);
 
   return (
     <div className='lobby'>
@@ -29,14 +29,14 @@ const Lobby = () => {
           This is only Whatsapp clone, all your data is save, select chat in
           left sidebar for start a chat
         </p>
-        <input
+        {/* <input
           type='file'
           name='image'
           id='image'
           onChange={(e) => {
             setImage(e.target.files[0]);
           }}
-        />
+        /> */}
       </div>
     </div>
   );

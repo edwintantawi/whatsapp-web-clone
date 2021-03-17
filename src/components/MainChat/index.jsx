@@ -28,7 +28,6 @@ function MainChat() {
   });
 
   useEffect(() => {
-    console.log('effect in main chat is working', roomid);
     if (roomid) {
       const unSubscribedRoomHeader = db
         .collection('rooms')

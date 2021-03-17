@@ -7,14 +7,18 @@ import SearchIcon from '@material-ui/icons/Search';
 import ChatChannel from 'components/ChatChannel';
 import { db } from 'services/firebase';
 import { useStateValue } from 'context/stateProvider';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import './index.scss';
 
-import avatar from 'assets/images/avatar.png';
+import SideMenu from 'components/SideMenu';
+import { actionTypes } from 'context/reducer';
 
 function SideChat() {
   const [rooms, setRooms] = useState([]);
-  const [{ user, inChat }] = useStateValue();
+  const [friendsList, setFriends] = useState([
+    { displayname: 'hantu' },
+    { displayname: 'bebek' },
+  ]);
+  const [{ user, inChat, profile }, dispatch] = useStateValue();
 
   useEffect(() => {
     db.collection('rooms').onSnapshot((snapShot) => {
@@ -25,10 +29,36 @@ function SideChat() {
         }))
       );
     });
-  }, []);
+    // user profile
+    db.collection('users')
+      .where('email', 'in', [user.email])
+      .onSnapshot((snapShot) => {
+        snapShot.docs.forEach((doc) => {
+          const data = doc.data();
+          dispatch({
+            type: actionTypes.SET_PROFILE,
+            profile: {
+              avatar: data.avatar,
+              displayname: data.displayname,
+              username: data.username,
+              email: data.email,
+              friends: data.friends,
+            },
+          });
+        });
+      });
+  }, [user.email, dispatch]);
+
+  useEffect(() => {
+    db.collection('users')
+      .where('email', 'in', profile.friends)
+      .onSnapshot((snapShot) => {
+        setFriends(snapShot.docs.map((doc) => doc.data()));
+      });
+  }, [profile.friends]);
 
   const toggleActive = (target) => {
-    const targetElement = document.querySelector(`.${target}`);
+    const targetElement = document.querySelector(`#${target}`);
     targetElement.classList.toggle('active');
   };
 
@@ -57,19 +87,23 @@ function SideChat() {
   return (
     <div className={`sidechat ${inChat ? '' : 'active'}`}>
       <div className='sidechat__header'>
-        <Avatar alt='Your Avatar' src={user.photoURL} />
+        <Avatar
+          alt='Your Avatar'
+          src={user.photoURL}
+          onClick={() => toggleActive('profile')}
+        />
         <div className='sidechat__header__icons'>
           <IconButton>
             <DonutLargeIcon className='button' />
           </IconButton>
-          <IconButton onClick={() => toggleActive('sidemenu__newchat')}>
+          <IconButton onClick={() => toggleActive('newchat')}>
             <ChatIcon className='button' />
           </IconButton>
-          <IconButton onClick={() => toggleActive('menu__list')}>
+          <IconButton onClick={() => toggleActive('menulist')}>
             <MoreVertIcon className='button' />
           </IconButton>
 
-          <ul className='menu__list'>
+          <ul className='menu__list' id='menulist'>
             <li data-action='GROUP_CHAT' onClick={(e) => menuActionButton(e)}>
               New Group
             </li>
@@ -126,34 +160,48 @@ function SideChat() {
       </div>
 
       {/* side menu */}
-      <div className='sidemenu__newchat'>
-        <div className='sidemenu__newchat__header'>
-          <div className='wrapper'>
-            <IconButton onClick={() => toggleActive('sidemenu__newchat')}>
-              <KeyboardBackspaceIcon />
-            </IconButton>
-            <span className='title'>New Chat</span>
+      <SideMenu title='New Chat' id='newchat'>
+        {friendsList.map((friend, idx) => (
+          <ChatChannel
+            key={idx}
+            name={friend.displayname}
+            avatar={friend.avatar}
+            isFriend
+          />
+        ))}
+      </SideMenu>
+
+      <SideMenu title='Profile' id='profile'>
+        <div className='profile__section'>
+          <div
+            className='profile__avatar'
+            style={{ padding: '28px 0', display: 'grid', placeItems: 'center' }}
+          >
+            <Avatar
+              src={profile.avatar}
+              style={{ width: '200px', height: '200px' }}
+            />
+          </div>
+
+          <div className='section__menu'>
+            <div className='section__menu__title'>
+              <span>Your Name</span>
+            </div>
+            <div className='section__menu__data'>
+              <span>{profile.displayname}</span>
+            </div>
+          </div>
+
+          <div className='section__menu'>
+            <div className='section__menu__title'>
+              <span>Username</span>
+            </div>
+            <div className='section__menu__data'>
+              <span>{`@${profile.username}`}</span>
+            </div>
           </div>
         </div>
-        <ChatChannel
-          id='friend id'
-          name='Your Friend'
-          avatar={avatar}
-          isFriend
-        />
-        <ChatChannel
-          id='friend id'
-          name='Your Friend'
-          avatar={avatar}
-          isFriend
-        />
-        <ChatChannel
-          id='friend id'
-          name='Your Friend'
-          avatar={avatar}
-          isFriend
-        />
-      </div>
+      </SideMenu>
     </div>
   );
 }

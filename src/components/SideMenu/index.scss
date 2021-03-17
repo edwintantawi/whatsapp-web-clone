@@ -1,0 +1,61 @@
+@import '../../index.scss';
+
+.sidemenu {
+  position: absolute;
+  top: 0;
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transition: 350ms;
+  transform: translateX(-100vw);
+
+  &.active {
+    transform: translateX(0);
+  }
+
+  &__header {
+    padding: 0 20px 0 23px;
+    height: 107px;
+    background-color: #00bfa5;
+    display: flex;
+    align-items: flex-end;
+    color: $white;
+    .wrapper {
+      display: flex;
+      align-items: center;
+      height: 59px;
+      button {
+        color: white;
+      }
+      span.title {
+        font-size: 19px;
+        padding-left: 12px;
+      }
+    }
+  }
+}
+
+//
+.profile__section {
+  background-color: $gray-300;
+  height: 100%;
+}
+.section__menu {
+  height: 86px;
+  padding: 14px 30px 10px;
+  margin-bottom: 10px;
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  &__title {
+    font-size: 14px;
+    color: $accent-300;
+  }
+  &__data {
+    font-size: 17px;
+    color: $gray-500;
+    margin: 8px 0;
+  }
+}
