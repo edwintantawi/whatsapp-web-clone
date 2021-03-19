@@ -2,6 +2,7 @@ export const initialState = {
   user: null,
   inChat: false,
   profile: {
+    uid: '',
     avatar: '',
     displayname: '-',
     username: 'none',
@@ -32,6 +33,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         profile: {
+          uid: action.profile.uid,
           avatar: action.profile.avatar,
           displayname: action.profile.displayname,
           username: action.profile.username,

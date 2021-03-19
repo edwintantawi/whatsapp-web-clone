@@ -8,14 +8,13 @@ import './App.scss';
 import { useStateValue } from 'context/stateProvider';
 import Lobby from 'components/Lobby';
 
-function App() {
-  const [{ user }] = useStateValue();
+const App = () => {
+  const [{ profile }] = useStateValue();
   return (
     <div className='app'>
-      {!user ? (
+      {!profile.uid ? (
         <Auth />
       ) : (
-        // <div className='app-body'>
         <Router>
           <SideChat />
           <Switch>
@@ -27,10 +26,9 @@ function App() {
             </Route>
           </Switch>
         </Router>
-        // </div>
       )}
     </div>
   );
-}
+};
 
 export default App;

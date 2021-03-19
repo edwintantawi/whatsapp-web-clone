@@ -14,12 +14,12 @@ import { db } from 'services/firebase';
 import { useStateValue } from 'context/stateProvider';
 import { actionTypes } from 'context/reducer';
 
-function MainChat() {
+const MainChat = () => {
   const { roomid } = useParams();
   const [roomName, setRoomName] = useState('');
   const [roomAvatar, setRoomAvatar] = useState('');
   const [messages, setMessages] = useState([]);
-  const [{ user, inChat }, dispatch] = useStateValue();
+  const [{ profile, inChat }, dispatch] = useStateValue();
   const [messageInput, setInput] = useState('');
   const chatArea = useRef(null);
 
@@ -56,8 +56,8 @@ function MainChat() {
   const sendMessage = () => {
     if (messageInput !== '') {
       db.collection('rooms').doc(roomid).collection('messages').add({
-        email: user.email,
-        name: user.displayName,
+        uid: profile.uid,
+        name: profile.displayname,
         message: messageInput,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
@@ -120,7 +120,7 @@ function MainChat() {
             username={message.name}
             message={message.message}
             timestamp={handleTimestamp(message)}
-            myMessage={message.email === user.email ? true : false}
+            myMessage={message.uid === profile.uid ? true : false}
           />
         ))}
       </div>
@@ -159,6 +159,6 @@ function MainChat() {
       </div>
     </div>
   );
-}
+};
 
 export default MainChat;

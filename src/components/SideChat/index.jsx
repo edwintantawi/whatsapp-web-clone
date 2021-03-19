@@ -10,15 +10,11 @@ import { useStateValue } from 'context/stateProvider';
 import './index.scss';
 
 import SideMenu from 'components/SideMenu';
-import { actionTypes } from 'context/reducer';
 
-function SideChat() {
+const SideChat = () => {
   const [rooms, setRooms] = useState([]);
-  const [friendsList, setFriends] = useState([
-    { displayname: 'hantu' },
-    { displayname: 'bebek' },
-  ]);
-  const [{ user, inChat, profile }, dispatch] = useStateValue();
+  const [friendsList, setFriends] = useState([]);
+  const [{ inChat, profile }] = useStateValue();
 
   useEffect(() => {
     db.collection('rooms').onSnapshot((snapShot) => {
@@ -29,33 +25,16 @@ function SideChat() {
         }))
       );
     });
-    // user profile
-    db.collection('users')
-      .where('email', 'in', [user.email])
-      .onSnapshot((snapShot) => {
-        snapShot.docs.forEach((doc) => {
-          const data = doc.data();
-          dispatch({
-            type: actionTypes.SET_PROFILE,
-            profile: {
-              avatar: data.avatar,
-              displayname: data.displayname,
-              username: data.username,
-              email: data.email,
-              friends: data.friends,
-            },
-          });
-        });
-      });
-  }, [user.email, dispatch]);
+  }, []);
 
   useEffect(() => {
+    // get friends
     db.collection('users')
-      .where('email', 'in', profile.friends)
+      .where('uid', 'in', profile.friends)
       .onSnapshot((snapShot) => {
         setFriends(snapShot.docs.map((doc) => doc.data()));
       });
-  }, [profile.friends]);
+  }, [profile]);
 
   const toggleActive = (target) => {
     const targetElement = document.querySelector(`#${target}`);
@@ -89,7 +68,7 @@ function SideChat() {
       <div className='sidechat__header'>
         <Avatar
           alt='Your Avatar'
-          src={user.photoURL}
+          src={profile.avatar}
           onClick={() => toggleActive('profile')}
         />
         <div className='sidechat__header__icons'>
@@ -204,6 +183,6 @@ function SideChat() {
       </SideMenu>
     </div>
   );
-}
+};
 
 export default SideChat;
