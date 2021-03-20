@@ -16,10 +16,9 @@ import { actionTypes } from 'context/reducer';
 
 const MainChat = () => {
   const { roomid } = useParams();
-  const [roomName, setRoomName] = useState('');
-  const [roomAvatar, setRoomAvatar] = useState('');
+  const [roomInfo, setRoomInfo] = useState('');
   const [messages, setMessages] = useState([]);
-  const [{ profile, inChat }, dispatch] = useStateValue();
+  const [{ profile, inChat, friends }, dispatch] = useStateValue();
   const [messageInput, setInput] = useState('');
   const chatArea = useRef(null);
 
@@ -29,12 +28,55 @@ const MainChat = () => {
 
   useEffect(() => {
     if (roomid) {
+      // create room
       const unSubscribedRoomHeader = db
         .collection('rooms')
         .doc(roomid)
         .onSnapshot((snapShot) => {
-          setRoomName(snapShot.data().name);
-          setRoomAvatar(snapShot.data().avatar);
+          const data = snapShot.data();
+          if (data?.isgroup === true) {
+            setRoomInfo(data);
+            // setRoomName(data.name);
+            // setRoomAvatar(data.avatar);
+
+            // db.collection('rooms')
+            //   .doc(roomid)
+            //   .set({
+            //     members: ['public'],
+            //   });
+          } else {
+            const members = roomid.split('_');
+            setRoomInfo({
+              avatar: '',
+              name: 'Unknow',
+            });
+            members.forEach((member) => {
+              if (member !== profile.uid) {
+                friends.forEach((friend) => {
+                  if (friend.uid === member) {
+                    setRoomInfo({
+                      avatar: friend.avatar,
+                      name: friend.displayname,
+                    });
+                  }
+                });
+              }
+            });
+
+            const createRoom = async () => {
+              const currentRoom = db.collection('rooms').doc(roomid);
+              const doc = await currentRoom.get();
+
+              if (!doc.exists) {
+                db.collection('rooms').doc(roomid).set({
+                  members: members,
+                  isgroup: false,
+                });
+              }
+            };
+
+            createRoom();
+          }
         });
 
       const unSubscribedMessage = db
@@ -51,7 +93,7 @@ const MainChat = () => {
         unSubscribedRoomHeader();
       };
     }
-  }, [roomid]);
+  }, [roomid, friends, profile.uid]);
 
   const sendMessage = () => {
     if (messageInput !== '') {
@@ -93,10 +135,10 @@ const MainChat = () => {
               <KeyboardBackspaceIcon />
             </IconButton>
           </div>
-          <Avatar alt='Your Avatar' src={roomAvatar} />
+          <Avatar alt='Your Avatar' src={roomInfo.avatar} />
           <div className='mainchat__header__title__text'>
             <span className='mainchat__header__title__text__name'>
-              {roomName}
+              {roomInfo.name}
             </span>
             <span className='mainchat__header__title__text__description'>
               {`last seen at ${handleTimestamp(messages[messages.length - 1])}`}
@@ -117,7 +159,7 @@ const MainChat = () => {
         {messages.map((message, idx) => (
           <ChatBubble
             key={idx}
-            username={message.name}
+            username={roomInfo.isgroup ? message.name : null}
             message={message.message}
             timestamp={handleTimestamp(message)}
             myMessage={message.uid === profile.uid ? true : false}

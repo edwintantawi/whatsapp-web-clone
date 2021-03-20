@@ -9,12 +9,14 @@ export const initialState = {
     email: '-',
     friends: ['none'],
   },
+  friends: [],
 };
 
 export const actionTypes = {
   SET_USER: 'SET_USER',
   SET_INCHAT: 'SET_INCHAT',
   SET_PROFILE: 'SET_PROFILE',
+  SET_FRIENDS: 'SET_FRIENDS',
 };
 
 const reducer = (state, action) => {
@@ -40,6 +42,11 @@ const reducer = (state, action) => {
           email: action.profile.email,
           friends: action.profile.friends,
         },
+      };
+    case actionTypes.SET_FRIENDS:
+      return {
+        ...state,
+        friends: action.friends,
       };
     default:
       return state;

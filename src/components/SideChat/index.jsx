@@ -10,31 +10,36 @@ import { useStateValue } from 'context/stateProvider';
 import './index.scss';
 
 import SideMenu from 'components/SideMenu';
+import { actionTypes } from 'context/reducer';
 
 const SideChat = () => {
   const [rooms, setRooms] = useState([]);
-  const [friendsList, setFriends] = useState([]);
-  const [{ inChat, profile }] = useStateValue();
+  const [{ inChat, profile, friends }, dispatch] = useStateValue();
 
   useEffect(() => {
-    db.collection('rooms').onSnapshot((snapShot) => {
-      setRooms(
-        snapShot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-        }))
-      );
-    });
-  }, []);
+    db.collection('rooms')
+      .where('members', 'array-contains-any', [profile.uid, 'public'])
+      .onSnapshot((snapShot) => {
+        setRooms(
+          snapShot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        );
+      });
+  }, [profile.uid]);
 
   useEffect(() => {
     // get friends
     db.collection('users')
       .where('uid', 'in', profile.friends)
       .onSnapshot((snapShot) => {
-        setFriends(snapShot.docs.map((doc) => doc.data()));
+        dispatch({
+          type: actionTypes.SET_FRIENDS,
+          friends: snapShot.docs.map((doc) => doc.data()),
+        });
       });
-  }, [profile]);
+  }, [profile, dispatch]);
 
   const toggleActive = (target) => {
     const targetElement = document.querySelector(`#${target}`);
@@ -134,15 +139,17 @@ const SideChat = () => {
             id={room.id}
             name={room.data.name}
             avatar={room.data.avatar}
+            isGroup={room.data.isgroup}
           />
         ))}
       </div>
 
       {/* side menu */}
       <SideMenu title='New Chat' id='newchat'>
-        {friendsList.map((friend, idx) => (
+        {friends.map((friend, idx) => (
           <ChatChannel
             key={idx}
+            id={friend.uid}
             name={friend.displayname}
             avatar={friend.avatar}
             isFriend
