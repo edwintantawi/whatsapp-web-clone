@@ -153,6 +153,9 @@ const SideChat = () => {
             name={friend.displayname}
             avatar={friend.avatar}
             isFriend
+            onClick={() => {
+              toggleActive('newchat');
+            }}
           />
         ))}
       </SideMenu>

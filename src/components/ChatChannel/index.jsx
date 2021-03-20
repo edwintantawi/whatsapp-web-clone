@@ -6,7 +6,7 @@ import { db } from 'services/firebase';
 import { useStateValue } from 'context/stateProvider';
 import { actionTypes } from 'context/reducer';
 
-const ChatChannel = ({ id, name, avatar, isFriend, isGroup }) => {
+const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
   const [{ profile, friends }, dispatch] = useStateValue();
   const [lastMessage, setLastMessage] = useState([
     {
@@ -67,7 +67,10 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup }) => {
         to={`/room/${profile.uid}_${id}`}
         className={`chatchannel`}
         id={id}
-        onClick={() => mobileHandleClick}
+        onClick={() => {
+          mobileHandleClick();
+          onClick();
+        }}
       >
         <Avatar src={avatar} />
         <div className='chatchannel__info'>
