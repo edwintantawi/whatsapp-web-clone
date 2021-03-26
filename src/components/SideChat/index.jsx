@@ -17,6 +17,7 @@ const SideChat = () => {
   const [{ inChat, profile, friends }, dispatch] = useStateValue();
 
   useEffect(() => {
+    console.info('SideChat effect 1');
     db.collection('rooms')
       .where('members', 'array-contains-any', [profile.uid, 'public'])
       .onSnapshot((snapShot) => {
@@ -30,6 +31,7 @@ const SideChat = () => {
   }, [profile.uid]);
 
   useEffect(() => {
+    console.info('SideChat effect 2');
     // get friends
     db.collection('users')
       .where('uid', 'in', profile.friends)

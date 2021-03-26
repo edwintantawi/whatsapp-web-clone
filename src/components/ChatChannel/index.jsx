@@ -14,7 +14,22 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
       message: 'Start Message Now...',
     },
   ]);
+
+  const [channelData, setChannelData] = useState({});
+  const [roomTarget, setRoomTarget] = useState('');
+  const [reRoom, setReRoom] = useState(false);
+  const [newRoom, setNewRoom] = useState(0);
+
   useEffect(() => {
+    db.collection('rooms')
+      .where('members', 'array-contains-any', [profile.uid, 'public'])
+      .onSnapshot(() => {
+        setNewRoom(Math.random(10));
+      });
+  }, [profile.uid]);
+
+  useEffect(() => {
+    console.info('ChatCannel effect');
     const unSubscribeMessage = db
       .collection('rooms')
       .doc(id)
@@ -26,10 +41,60 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
         }
       });
 
+    if (!isGroup) {
+      const members = id.split('_');
+      let friend = '';
+      members.forEach((member) => {
+        if (member !== profile.uid) {
+          friend = member;
+        }
+      });
+
+      if (friend !== profile.uid) {
+        getFriend(friend)
+          .then((data) => {
+            setChannelData({
+              friendName: data.displayname,
+              friendAvatar: data.avatar,
+            });
+          })
+          .catch((error) => console.error(error));
+
+        friends.forEach((friendList) => {
+          if (friendList.uid === friend) {
+            setChannelData({
+              friendName: friendList.displayname,
+              friendAvatar: friendList.avatar,
+            });
+          }
+        });
+      }
+    }
+
+    if (isFriend) {
+      const getRoom = async () => {
+        const roomData = db.collection('rooms').doc(`${id}_${profile.uid}`);
+        const data = await roomData.get();
+        if (data.exists) {
+          setReRoom(true);
+        }
+      };
+
+      getRoom();
+    }
+
     return () => {
       unSubscribeMessage();
     };
-  }, [id]);
+  }, [id, isFriend, isGroup, friends, newRoom, profile.uid]);
+
+  useEffect(() => {
+    if (reRoom) {
+      setRoomTarget(`${id}_${profile.uid}`);
+    } else {
+      setRoomTarget(`${profile.uid}_${id}`);
+    }
+  }, [reRoom, id, newRoom, profile.uid]);
 
   const mobileHandleClick = () => {
     if (window.innerWidth < 885) {
@@ -38,6 +103,12 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
         inChat: true,
       });
     }
+  };
+
+  const getFriend = async (uid) => {
+    const friend = db.collection('users').doc(uid);
+    const friendData = await friend.get();
+    return friendData.data();
   };
 
   if (isGroup) {
@@ -60,11 +131,10 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
       </Link>
     );
   }
-
   if (isFriend) {
     return (
       <Link
-        to={`/room/${profile.uid}_${id}`}
+        to={`/room/${roomTarget}`}
         className={`chatchannel`}
         id={id}
         onClick={() => {
@@ -81,21 +151,6 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
   }
 
   if (!isGroup) {
-    const members = id.split('_');
-    let friendName = 'Unknow';
-    let friendAvatar = '';
-
-    members.forEach((member) => {
-      if (member !== profile.uid) {
-        friends.forEach((friend) => {
-          if (friend.uid === member) {
-            friendName = friend.displayname;
-            friendAvatar = friend.avatar;
-          }
-        });
-      }
-    });
-
     return (
       <Link
         to={`/room/${id}`}
@@ -103,13 +158,13 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
         id={id}
         onClick={mobileHandleClick}
       >
-        <Avatar src={friendAvatar} />
+        <Avatar src={channelData.friendAvatar} />
         <div className='chatchannel__info'>
-          <span className='chatchannel__info__name'>{friendName}</span>
+          <span className='chatchannel__info__name'>
+            {channelData.friendName}
+          </span>
           <span className='chatchannel__info__lastchat'>
-            {`${
-              lastMessage[0]?.uid === profile.uid ? 'you' : lastMessage[0]?.name
-            }: ${lastMessage[0]?.message}`}
+            {lastMessage[0]?.message}
           </span>
         </div>
       </Link>

@@ -44,10 +44,17 @@ const reducer = (state, action) => {
         },
       };
     case actionTypes.SET_FRIENDS:
+      // return [
+      //   ...state,
+      //   {
+      //     friends: action.friends,
+      //   },
+      // ];
       return {
         ...state,
         friends: action.friends,
       };
+
     default:
       return state;
   }

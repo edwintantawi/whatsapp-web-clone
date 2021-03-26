@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import firebase from 'firebase/app';
+import firebase from '../../services/firebase';
 import { Avatar, IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -27,6 +27,7 @@ const MainChat = () => {
   });
 
   useEffect(() => {
+    console.info('MainChat effect');
     if (roomid) {
       // create room
       const unSubscribedRoomHeader = db
@@ -46,22 +47,28 @@ const MainChat = () => {
             //   });
           } else {
             const members = roomid.split('_');
-            setRoomInfo({
-              avatar: '',
-              name: 'Unknow',
-            });
+            let friend = '';
+            let friendUid = [];
             members.forEach((member) => {
               if (member !== profile.uid) {
-                friends.forEach((friend) => {
-                  if (friend.uid === member) {
-                    setRoomInfo({
-                      avatar: friend.avatar,
-                      name: friend.displayname,
-                    });
-                  }
-                });
+                friend = member;
               }
             });
+
+            friends.forEach((friend) => {
+              friendUid.push(friend.uid);
+            });
+
+            if (friend !== profile.uid) {
+              getFriend(friend).then((data) => {
+                setRoomInfo({
+                  avatar: data.avatar,
+                  name: data.displayname,
+                  friendUid: data.uid,
+                  newFriend: !friendUid.includes(data.uid),
+                });
+              });
+            }
 
             const createRoom = async () => {
               const currentRoom = db.collection('rooms').doc(roomid);
@@ -94,6 +101,20 @@ const MainChat = () => {
       };
     }
   }, [roomid, friends, profile.uid]);
+
+  const getFriend = async (uid) => {
+    const friend = db.collection('users').doc(uid);
+    const friendData = await friend.get();
+    return friendData.data();
+  };
+
+  const addFriend = () => {
+    db.collection('users')
+      .doc(profile.uid)
+      .update({
+        friends: firebase.firestore.FieldValue.arrayUnion(roomInfo.friendUid),
+      });
+  };
 
   const sendMessage = () => {
     if (messageInput !== '') {
@@ -167,6 +188,14 @@ const MainChat = () => {
         ))}
       </div>
 
+      {roomInfo.newFriend ? (
+        <div className='mainchat__addfriend'>
+          <h2>{`You with ${roomInfo.name} Not a Friend now`}</h2>
+          <p>add to your Friend list?</p>
+          <button onClick={addFriend}>Add Friend</button>
+        </div>
+      ) : null}
+
       <div className='mainchat__footer'>
         <div className='mainchat__footer__lefticon'>
           <IconButton>
@@ -176,7 +205,14 @@ const MainChat = () => {
             <AttachFileIcon />
           </IconButton>
         </div>
-        <div className='mainchat__footer__input'>
+        <form
+          className='mainchat__footer__input'
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendMessage();
+            setInput('');
+          }}
+        >
           <input
             type='text'
             name='message'
@@ -184,15 +220,9 @@ const MainChat = () => {
             placeholder='Type a message'
             value={messageInput}
             onChange={(e) => setInput(e.target.value)}
-            onKeyUp={(e) => {
-              if (e.keyCode === 13) {
-                e.preventDefault();
-                sendMessage();
-                setInput('');
-              }
-            }}
           />
-        </div>
+          <button type='submit' style={{ display: 'none' }}></button>
+        </form>
         <div className='mainchat__footer__righticon'>
           <IconButton>
             <MicIcon />

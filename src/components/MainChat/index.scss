@@ -128,6 +128,32 @@
       padding-top: 50px;
     }
   }
+
+  &__addfriend {
+    background-color: $accent-300;
+    color: white;
+    text-align: center;
+    padding: 28px 16px;
+    margin-bottom: 62px;
+    @media (min-width: 885px) {
+      margin-bottom: 0;
+    }
+
+    button {
+      background-color: transparent;
+      padding: 6px 16px;
+      border: 1px dashed white;
+      margin-top: 16px;
+      font-size: 18px;
+      cursor: pointer;
+      color: white;
+
+      &:hover {
+        border: 1px solid white;
+      }
+    }
+  }
+
   &__footer {
     height: 62px;
     background-color: $gray-100;
