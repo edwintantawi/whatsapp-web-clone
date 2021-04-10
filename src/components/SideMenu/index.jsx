@@ -11,13 +11,13 @@ const SideMenu = ({ id, title, children }) => {
   };
 
   return (
-    <div className='sidemenu' id={id}>
-      <div className='sidemenu__header'>
-        <div className='wrapper'>
+    <div className="sidemenu" id={id}>
+      <div className="sidemenu__header">
+        <div className="wrapper">
           <IconButton onClick={() => toggleActive(id)}>
             <KeyboardBackspaceIcon />
           </IconButton>
-          <span className='title'>{title}</span>
+          <span className="title">{title}</span>
         </div>
       </div>
       {children}

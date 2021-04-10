@@ -160,10 +160,10 @@ const MainChat = () => {
 
   return (
     <div className={`mainchat ${inChat ? 'active' : ''}`}>
-      <div className='mainchat__header'>
-        <div className='mainchat__header__title'>
+      <div className="mainchat__header">
+        <div className="mainchat__header__title">
           <div
-            id='back'
+            id="back"
             onClick={() => {
               dispatch({
                 type: actionTypes.SET_INCHAT,
@@ -175,17 +175,17 @@ const MainChat = () => {
               <KeyboardBackspaceIcon />
             </IconButton>
           </div>
-          <Avatar alt='Your Avatar' src={roomInfo.avatar} />
-          <div className='mainchat__header__title__text'>
-            <span className='mainchat__header__title__text__name'>
+          <Avatar alt="Your Avatar" src={roomInfo.avatar} />
+          <div className="mainchat__header__title__text">
+            <span className="mainchat__header__title__text__name">
               {roomInfo.name}
             </span>
-            <span className='mainchat__header__title__text__description'>
+            <span className="mainchat__header__title__text__description">
               {`${handleTimestamp(messages[messages.length - 1])}`}
             </span>
           </div>
         </div>
-        <div className='mainchat__header__icons'>
+        <div className="mainchat__header__icons">
           <IconButton>
             <SearchIcon />
           </IconButton>
@@ -195,7 +195,7 @@ const MainChat = () => {
         </div>
       </div>
 
-      <div className='mainchat__chatarea' ref={chatArea}>
+      <div className="mainchat__chatarea" ref={chatArea}>
         {messages.map((message, idx) => (
           <ChatBubble
             key={idx}
@@ -208,15 +208,15 @@ const MainChat = () => {
       </div>
 
       {roomInfo.newFriend ? (
-        <div className='mainchat__addfriend'>
+        <div className="mainchat__addfriend">
           <h2>{`You with ${roomInfo.name} Not a Friend now`}</h2>
           <p>add to your Friend list?</p>
           <button onClick={addFriend}>Add Friend</button>
         </div>
       ) : null}
 
-      <div className='mainchat__footer'>
-        <div className='mainchat__footer__lefticon'>
+      <div className="mainchat__footer">
+        <div className="mainchat__footer__lefticon">
           <IconButton>
             <MoodIcon />
           </IconButton>
@@ -225,7 +225,7 @@ const MainChat = () => {
           </IconButton>
         </div>
         <form
-          className='mainchat__footer__input'
+          className="mainchat__footer__input"
           onSubmit={(e) => {
             e.preventDefault();
             sendMessage();
@@ -233,16 +233,16 @@ const MainChat = () => {
           }}
         >
           <input
-            type='text'
-            name='message'
-            id='message'
-            placeholder='Type a message'
+            type="text"
+            name="message"
+            id="message"
+            placeholder="Type a message"
             value={messageInput}
             onChange={(e) => setInput(e.target.value)}
           />
-          <button type='submit' style={{ display: 'none' }}></button>
+          <button type="submit" style={{ display: 'none' }}></button>
         </form>
-        <div className='mainchat__footer__righticon'>
+        <div className="mainchat__footer__righticon">
           <IconButton>
             <MicIcon />
           </IconButton>

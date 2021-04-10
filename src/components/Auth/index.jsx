@@ -59,12 +59,12 @@ const Auth = () => {
   };
 
   return (
-    <div className='login-buttons'>
-      <div className='wrap'>
+    <div className="login-buttons">
+      <div className="wrap">
         <h1>Whatsapp Web Clone</h1>
         <p>Powered by: ReactJS, MaterialUI, Firebase</p>
         <button
-          className='login-provider-button'
+          className="login-provider-button"
           onClick={() => {
             auth
               .signInWithPopup(provider)
@@ -77,8 +77,8 @@ const Auth = () => {
           }}
         >
           <img
-            src='https://img.icons8.com/fluent/28/000000/google-logo.png'
-            alt='google auth'
+            src="https://img.icons8.com/fluent/28/000000/google-logo.png"
+            alt="google auth"
           />
           <span> Continue with Google</span>
         </button>

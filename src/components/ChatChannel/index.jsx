@@ -113,16 +113,16 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
   if (isGroup) {
     return (
       <NavLink
-        activeClassName='active'
+        activeClassName="active"
         to={`/room/${id}`}
         className={`chatchannel`}
         id={id}
         onClick={mobileHandleClick}
       >
         <Avatar src={avatar} />
-        <div className='chatchannel__info'>
-          <span className='chatchannel__info__name'>{name}</span>
-          <span className='chatchannel__info__lastchat'>
+        <div className="chatchannel__info">
+          <span className="chatchannel__info__name">{name}</span>
+          <span className="chatchannel__info__lastchat">
             {`${
               lastMessage[0]?.uid === profile.uid ? 'you' : lastMessage[0]?.name
             }: ${lastMessage[0]?.message}`}
@@ -134,7 +134,7 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
   if (isFriend) {
     return (
       <NavLink
-        activeClassName='active'
+        activeClassName="active"
         to={`/room/${roomTarget}`}
         className={`chatchannel`}
         id={id}
@@ -144,8 +144,8 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
         }}
       >
         <Avatar src={avatar} />
-        <div className='chatchannel__info'>
-          <span className='chatchannel__info__name'>{name}</span>
+        <div className="chatchannel__info">
+          <span className="chatchannel__info__name">{name}</span>
         </div>
       </NavLink>
     );
@@ -153,18 +153,18 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
 
   return (
     <NavLink
-      activeClassName='active'
+      activeClassName="active"
       to={`/room/${id}`}
       className={`chatchannel`}
       id={id}
       onClick={mobileHandleClick}
     >
       <Avatar src={channelData.friendAvatar} />
-      <div className='chatchannel__info'>
-        <span className='chatchannel__info__name'>
+      <div className="chatchannel__info">
+        <span className="chatchannel__info__name">
           {channelData.friendName}
         </span>
-        <span className='chatchannel__info__lastchat'>
+        <span className="chatchannel__info__lastchat">
           {lastMessage[0]?.message}
         </span>
       </div>

@@ -11,17 +11,17 @@ import Lobby from 'components/Lobby';
 const App = () => {
   const [{ profile }] = useStateValue();
   return (
-    <div className='app'>
+    <div className="app">
       {!profile.uid ? (
         <Auth />
       ) : (
-        <Router basename='#'>
+        <Router basename="#">
           <SideChat />
           <Switch>
-            <Route path='/room/:roomid'>
+            <Route path="/room/:roomid">
               <MainChat />
             </Route>
-            <Route path='/'>
+            <Route path="/">
               <Lobby />
             </Route>
           </Switch>

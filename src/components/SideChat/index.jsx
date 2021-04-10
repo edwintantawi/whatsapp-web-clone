@@ -72,69 +72,69 @@ const SideChat = () => {
 
   return (
     <div className={`sidechat ${inChat ? '' : 'active'}`}>
-      <div className='sidechat__header'>
+      <div className="sidechat__header">
         <Avatar
-          alt='Your Avatar'
+          alt="Your Avatar"
           src={profile.avatar}
           onClick={() => toggleActive('profile')}
         />
-        <div className='sidechat__header__icons'>
+        <div className="sidechat__header__icons">
           <IconButton>
-            <DonutLargeIcon className='button' />
+            <DonutLargeIcon className="button" />
           </IconButton>
           <IconButton onClick={() => toggleActive('newchat')}>
-            <ChatIcon className='button' />
+            <ChatIcon className="button" />
           </IconButton>
           <IconButton onClick={() => toggleActive('menulist')}>
-            <MoreVertIcon className='button' />
+            <MoreVertIcon className="button" />
           </IconButton>
 
-          <ul className='menu__list' id='menulist'>
-            <li data-action='GROUP_CHAT' onClick={(e) => menuActionButton(e)}>
+          <ul className="menu__list" id="menulist">
+            <li data-action="GROUP_CHAT" onClick={(e) => menuActionButton(e)}>
               New Group
             </li>
-            <li data-action='ROOM' onClick={(e) => menuActionButton(e)}>
+            <li data-action="ROOM" onClick={(e) => menuActionButton(e)}>
               Create Room
             </li>
-            <li data-action='PROFILE' onClick={(e) => menuActionButton(e)}>
+            <li data-action="PROFILE" onClick={(e) => menuActionButton(e)}>
               Profile
             </li>
-            <li data-action='CATALOG' onClick={(e) => menuActionButton(e)}>
+            <li data-action="CATALOG" onClick={(e) => menuActionButton(e)}>
               Catalog
             </li>
-            <li data-action='ARCHIVED' onClick={(e) => menuActionButton(e)}>
+            <li data-action="ARCHIVED" onClick={(e) => menuActionButton(e)}>
               Archived
             </li>
-            <li data-action='STARRED' onClick={(e) => menuActionButton(e)}>
+            <li data-action="STARRED" onClick={(e) => menuActionButton(e)}>
               Stared
             </li>
-            <li data-action='LABELS' onClick={(e) => menuActionButton(e)}>
+            <li data-action="LABELS" onClick={(e) => menuActionButton(e)}>
               Labels
             </li>
-            <li data-action='SETTINGS' onClick={(e) => menuActionButton(e)}>
+            <li data-action="SETTINGS" onClick={(e) => menuActionButton(e)}>
               Settings
             </li>
 
-            <li data-action='LOGOUT' onClick={(e) => menuActionButton(e)}>
+            <li data-action="LOGOUT" onClick={(e) => menuActionButton(e)}>
               Logout
             </li>
           </ul>
         </div>
       </div>
 
-      <div className='sidechat__search'>
-        <div className='sidechat__search__input'>
-          <SearchIcon className='button' />
+      <div className="sidechat__search">
+        <div className="sidechat__search__input">
+          <SearchIcon className="button" />
           <input
-            type='text'
-            name='search'
-            id='search'
-            placeholder='Search or start a new chat'
+            type="text"
+            name="search"
+            id="search"
+            placeholder="Search or start a new chat"
           />
         </div>
       </div>
 
-      <div className='sidechat__chatlist'>
+      <div className="sidechat__chatlist">
         {rooms.map((room) => (
           <ChatChannel
             key={room.id}
@@ -147,7 +147,7 @@ const SideChat = () => {
       </div>
 
       {/* side menu */}
-      <SideMenu title='New Chat' id='newchat'>
+      <SideMenu title="New Chat" id="newchat">
         {friends.map((friend, idx) => (
           <ChatChannel
             key={idx}
@@ -162,10 +162,10 @@ const SideChat = () => {
         ))}
       </SideMenu>
 
-      <SideMenu title='Profile' id='profile'>
-        <div className='profile__section'>
+      <SideMenu title="Profile" id="profile">
+        <div className="profile__section">
           <div
-            className='profile__avatar'
+            className="profile__avatar"
             style={{ padding: '28px 0', display: 'grid', placeItems: 'center' }}
           >
             <Avatar
@@ -174,20 +174,20 @@ const SideChat = () => {
             />
           </div>
 
-          <div className='section__menu'>
-            <div className='section__menu__title'>
+          <div className="section__menu">
+            <div className="section__menu__title">
               <span>Your Name</span>
             </div>
-            <div className='section__menu__data'>
+            <div className="section__menu__data">
               <span>{profile.displayname}</span>
             </div>
           </div>
 
-          <div className='section__menu'>
-            <div className='section__menu__title'>
+          <div className="section__menu">
+            <div className="section__menu__title">
               <span>Username</span>
             </div>
-            <div className='section__menu__data'>
+            <div className="section__menu__data">
               <span>{`@${profile.username}`}</span>
             </div>
           </div>

@@ -21,8 +21,8 @@ const Lobby = () => {
   // }, [image]);
 
   return (
-    <div className='lobby'>
-      <div className='wraper'>
+    <div className="lobby">
+      <div className="wraper">
         <img src={phone} alt={phone} />
         <h1>Keep Connected to other</h1>
         <p>
