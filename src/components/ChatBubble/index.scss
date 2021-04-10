@@ -60,6 +60,10 @@
       .time {
         font-size: 11px;
         color: $black-100;
+
+        .MuiSvgIcon-root {
+          font-size: 12px;
+        }
       }
     }
   }

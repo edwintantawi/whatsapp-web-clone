@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
 import './index.scss';
 import { db } from 'services/firebase';
@@ -14,7 +14,6 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
       message: 'Start Message Now...',
     },
   ]);
-
   const [channelData, setChannelData] = useState({});
   const [roomTarget, setRoomTarget] = useState('');
   const [reRoom, setReRoom] = useState(false);
@@ -113,7 +112,8 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
 
   if (isGroup) {
     return (
-      <Link
+      <NavLink
+        activeClassName='active'
         to={`/room/${id}`}
         className={`chatchannel`}
         id={id}
@@ -128,12 +128,13 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
             }: ${lastMessage[0]?.message}`}
           </span>
         </div>
-      </Link>
+      </NavLink>
     );
   }
   if (isFriend) {
     return (
-      <Link
+      <NavLink
+        activeClassName='active'
         to={`/room/${roomTarget}`}
         className={`chatchannel`}
         id={id}
@@ -146,30 +147,29 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
         <div className='chatchannel__info'>
           <span className='chatchannel__info__name'>{name}</span>
         </div>
-      </Link>
+      </NavLink>
     );
   }
 
-  if (!isGroup) {
-    return (
-      <Link
-        to={`/room/${id}`}
-        className={`chatchannel`}
-        id={id}
-        onClick={mobileHandleClick}
-      >
-        <Avatar src={channelData.friendAvatar} />
-        <div className='chatchannel__info'>
-          <span className='chatchannel__info__name'>
-            {channelData.friendName}
-          </span>
-          <span className='chatchannel__info__lastchat'>
-            {lastMessage[0]?.message}
-          </span>
-        </div>
-      </Link>
-    );
-  }
+  return (
+    <NavLink
+      activeClassName='active'
+      to={`/room/${id}`}
+      className={`chatchannel`}
+      id={id}
+      onClick={mobileHandleClick}
+    >
+      <Avatar src={channelData.friendAvatar} />
+      <div className='chatchannel__info'>
+        <span className='chatchannel__info__name'>
+          {channelData.friendName}
+        </span>
+        <span className='chatchannel__info__lastchat'>
+          {lastMessage[0]?.message}
+        </span>
+      </div>
+    </NavLink>
+  );
 };
 
 export default ChatChannel;

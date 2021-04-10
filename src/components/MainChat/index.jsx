@@ -127,14 +127,33 @@ const MainChat = () => {
     }
   };
 
-  const handleTimestamp = (data) => {
+  const twoDigitsTime = (time) => {
+    let timePlaceholder = '';
+    time < 10 ? (timePlaceholder += `0${time}`) : (timePlaceholder += time);
+    return timePlaceholder;
+  };
+
+  const handleTimestamp = (data, sending) => {
     let newTimestamp = '';
     const time = new Date(data?.timestamp?.seconds * 1000);
-    const hours = time.getHours();
-    const minutes = time.getMinutes();
-    hours < 10 ? (newTimestamp += `0${hours}`) : (newTimestamp += hours);
-    newTimestamp += ':';
-    minutes < 10 ? (newTimestamp += `0${minutes}`) : (newTimestamp += minutes);
+    newTimestamp = `${twoDigitsTime(time.getHours())}:${twoDigitsTime(
+      time.getMinutes()
+    )}`;
+
+    if (newTimestamp === 'NaN:NaN') {
+      if (sending) {
+        const nowDate = new Date();
+        return `${twoDigitsTime(nowDate.getHours())}:${twoDigitsTime(
+          nowDate.getMinutes()
+        )} sending...`;
+      }
+
+      return 'Start Message now...';
+    }
+
+    if (!sending) {
+      return `last seen at ${newTimestamp}`;
+    }
 
     return newTimestamp;
   };
@@ -162,7 +181,7 @@ const MainChat = () => {
               {roomInfo.name}
             </span>
             <span className='mainchat__header__title__text__description'>
-              {`last seen at ${handleTimestamp(messages[messages.length - 1])}`}
+              {`${handleTimestamp(messages[messages.length - 1])}`}
             </span>
           </div>
         </div>
@@ -182,7 +201,7 @@ const MainChat = () => {
             key={idx}
             username={roomInfo.isgroup ? message.name : null}
             message={message.message}
-            timestamp={handleTimestamp(message)}
+            timestamp={handleTimestamp(message, true)}
             myMessage={message.uid === profile.uid ? true : false}
           />
         ))}

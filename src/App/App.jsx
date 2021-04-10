@@ -15,7 +15,7 @@ const App = () => {
       {!profile.uid ? (
         <Auth />
       ) : (
-        <Router>
+        <Router basename='#'>
           <SideChat />
           <Switch>
             <Route path='/room/:roomid'>
