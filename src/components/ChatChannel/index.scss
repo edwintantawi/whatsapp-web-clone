@@ -13,8 +13,10 @@
     background-color: #f5f5f5;
   }
 
-  &.active {
-    background-color: $gray-300;
+  @media screen and (min-width: 885px) {
+    &.active {
+      background-color: $gray-300;
+    }
   }
 
   .MuiAvatar-root {

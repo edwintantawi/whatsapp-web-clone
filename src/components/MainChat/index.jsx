@@ -124,6 +124,15 @@ const MainChat = () => {
         message: messageInput,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
+
+      db.collection('rooms').doc(roomid).set(
+        {
+          lastMessage: firebase.firestore.FieldValue.serverTimestamp(),
+        },
+        {
+          merge: true,
+        }
+      );
     }
   };
 

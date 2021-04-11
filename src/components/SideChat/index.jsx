@@ -20,6 +20,7 @@ const SideChat = () => {
     console.info('SideChat effect 1');
     db.collection('rooms')
       .where('members', 'array-contains-any', [profile.uid, 'public'])
+      .orderBy('lastMessage', 'desc')
       .onSnapshot((snapShot) => {
         setRooms(
           snapShot.docs.map((doc) => ({
@@ -35,6 +36,7 @@ const SideChat = () => {
     // get friends
     db.collection('users')
       .where('uid', 'in', profile.friends)
+      .orderBy('displayname', 'asc')
       .onSnapshot((snapShot) => {
         dispatch({
           type: actionTypes.SET_FRIENDS,
@@ -92,6 +94,9 @@ const SideChat = () => {
           <ul className="menu__list" id="menulist">
             <li data-action="GROUP_CHAT" onClick={(e) => menuActionButton(e)}>
               New Group
+            </li>
+            <li data-action="ADD_FRIEND" onClick={(e) => menuActionButton(e)}>
+              Add Friend
             </li>
             <li data-action="ROOM" onClick={(e) => menuActionButton(e)}>
               Create Room

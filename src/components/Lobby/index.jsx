@@ -1,6 +1,6 @@
 import React from 'react';
 
-import phone from 'assets/images/phone.png';
+import phone from 'assets/images/phone.webp';
 import './index.scss';
 // import { storage } from 'services/firebase';
 
