@@ -11,6 +11,8 @@ import './index.scss';
 
 import SideMenu from 'components/SideMenu';
 import { actionTypes } from 'context/reducer';
+import Modal from 'components/Modal';
+import ActionButton from 'components/ActionButton';
 
 const SideChat = () => {
   const [rooms, setRooms] = useState([]);
@@ -52,7 +54,10 @@ const SideChat = () => {
 
   const menuActionButton = ({ target }) => {
     const action = target.dataset.action;
-
+    const menuList = document.querySelector(`#menulist`);
+    menuList.classList.toggle('active');
+    const itemTarget = document.querySelector(`#modal-${action}`);
+    const modalLayer = document.querySelector(`#modal-layer`);
     switch (action) {
       case 'NEW_GROUP_CHAT':
         // pop up friend list
@@ -61,6 +66,10 @@ const SideChat = () => {
 
         // click many friends and create a group chat
 
+        break;
+      case 'ADD_FRIEND':
+        itemTarget.classList.toggle('modal--active');
+        modalLayer.classList.toggle('modal__layer--active');
         break;
       case 'NEW_PRIVATE_CHAT':
         // pop up friend list
@@ -153,6 +162,7 @@ const SideChat = () => {
 
       {/* side menu */}
       <SideMenu title="New Chat" id="newchat">
+        <ActionButton text="Add Friend" action="ADD_FRIEND" />
         {friends.map((friend, idx) => (
           <ChatChannel
             key={idx}
@@ -198,6 +208,15 @@ const SideChat = () => {
           </div>
         </div>
       </SideMenu>
+
+      {/* modals */}
+      <Modal
+        id="modal-ADD_FRIEND"
+        title="Add Friend"
+        text="add friend by username"
+      />
+      {/* modal layer */}
+      <div className="modal__layer" id="modal-layer"></div>
     </div>
   );
 };
