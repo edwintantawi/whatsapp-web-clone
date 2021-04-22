@@ -47,7 +47,7 @@ const Auth = () => {
           displayname: user.displayName,
           username: username,
           email: user.email,
-          friends: ['gc35F6ED6YhkDbHwow2ojilwtzX2'],
+          friends: ['none'],
         });
       // user profile
       getCurrentUser(user.uid);

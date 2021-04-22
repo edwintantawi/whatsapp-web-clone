@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, IconButton } from '@material-ui/core';
+import { Avatar, Button, IconButton } from '@material-ui/core';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import ChatIcon from '@material-ui/icons/Chat';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
 import ChatChannel from 'components/ChatChannel';
+import CreateIcon from '@material-ui/icons/Create';
 import { db } from 'services/firebase';
 import { useStateValue } from 'context/stateProvider';
 import './index.scss';
@@ -52,12 +53,20 @@ const SideChat = () => {
     targetElement.classList.toggle('active');
   };
 
+  const changeUsername = () => {
+    const itemTarget = document.querySelector(`#modal-CHANGE_USERNAME`);
+    const modalLayer = document.querySelector(`#modal-layer`);
+    itemTarget.classList.toggle('modal--active');
+    modalLayer.classList.toggle('modal__layer--active');
+  };
+
   const menuActionButton = ({ target }) => {
     const action = target.dataset.action;
     const menuList = document.querySelector(`#menulist`);
     menuList.classList.toggle('active');
     const itemTarget = document.querySelector(`#modal-${action}`);
     const modalLayer = document.querySelector(`#modal-layer`);
+
     switch (action) {
       case 'NEW_GROUP_CHAT':
         // pop up friend list
@@ -178,7 +187,7 @@ const SideChat = () => {
       </SideMenu>
 
       <SideMenu title="Profile" id="profile">
-        <div className="profile__section">
+        <div className="profile">
           <div
             className="profile__avatar"
             style={{ padding: '28px 0', display: 'grid', placeItems: 'center' }}
@@ -189,21 +198,26 @@ const SideChat = () => {
             />
           </div>
 
-          <div className="section__menu">
-            <div className="section__menu__title">
+          <div className="profile__section">
+            <div className="profile__title">
               <span>Your Name</span>
             </div>
-            <div className="section__menu__data">
+            <div className="profile__data">
               <span>{profile.displayname}</span>
             </div>
           </div>
 
-          <div className="section__menu">
-            <div className="section__menu__title">
+          <div className="profile__section">
+            <div className="profile__title">
               <span>Username</span>
             </div>
-            <div className="section__menu__data">
-              <span>{`@${profile.username}`}</span>
+            <div className="profile__data">
+              <span className="wrapper">
+                {`@${profile.username}`}
+                <Button onClick={changeUsername}>
+                  <CreateIcon />
+                </Button>
+              </span>
             </div>
           </div>
         </div>
@@ -214,6 +228,13 @@ const SideChat = () => {
         id="modal-ADD_FRIEND"
         title="Add Friend"
         text="add friend by username"
+        type="addFriend"
+      />
+      <Modal
+        id="modal-CHANGE_USERNAME"
+        title="Change Username"
+        text="create your own unique username"
+        type="changeUsername"
       />
       {/* modal layer */}
       <div className="modal__layer" id="modal-layer"></div>

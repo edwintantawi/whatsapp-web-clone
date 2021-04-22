@@ -70,20 +70,20 @@ const ChatChannel = ({ id, name, avatar, isFriend, isGroup, onClick }) => {
       }
     }
 
+    const getRoom = async () => {
+      const roomData = db.collection('rooms').doc(`${id}_${profile.uid}`);
+      const data = await roomData.get();
+      if (data.exists) {
+        setReRoom(true);
+      }
+    };
     if (isFriend) {
-      const getRoom = async () => {
-        const roomData = db.collection('rooms').doc(`${id}_${profile.uid}`);
-        const data = await roomData.get();
-        if (data.exists) {
-          setReRoom(true);
-        }
-      };
-
       getRoom();
     }
 
     return () => {
       unSubscribeMessage();
+      getRoom();
     };
   }, [id, isFriend, isGroup, friends, newRoom, profile.uid]);
 

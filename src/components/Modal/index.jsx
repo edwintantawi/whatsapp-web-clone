@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react';
 import firebase, { db } from 'services/firebase';
 import './index.scss';
 
-const Modal = ({ id, title, text, isAddFriend }) => {
+const Modal = ({ id, title, text, type }) => {
   const [{ profile }] = useStateValue();
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
@@ -67,12 +67,70 @@ const Modal = ({ id, title, text, isAddFriend }) => {
     }
   };
 
+  const handleChangeUsername = (e) => {
+    e.preventDefault();
+    if (input !== '') {
+      if (input.length < 10 || input.length > 16) {
+        setError(
+          'You need a minimum of 10, and a maximum of 16 characters for the username'
+        );
+        setSuccess('');
+      } else {
+        let isAlready = false;
+        db.collection('users')
+          .where('username', '==', input)
+          .get()
+          .then((data) => {
+            console.info('is empty : ', data.empty);
+            if (!data.empty) {
+              isAlready = true;
+            }
+            console.info('is ready : ', isAlready);
+            if (!isAlready) {
+              db.collection('users')
+                .doc(profile.uid)
+                .update({
+                  username: input,
+                })
+                .then(() => {
+                  setSuccess(
+                    'yey.., you have successfully changed your username'
+                  );
+                  setError('');
+                  setInput('');
+                });
+            } else {
+              setError(
+                'This username is already in use, try using something else'
+              );
+              setSuccess('');
+            }
+          });
+      }
+    }
+  };
+
   return (
     <div className="modal" id={id} ref={modal}>
       <div className="modal__head">
         <h2>{title}</h2>
       </div>
-      <form className="modal__body" onSubmit={handleAddFriend}>
+      <form
+        className="modal__body"
+        onSubmit={(e) => {
+          switch (type) {
+            case 'addFriend':
+              handleAddFriend(e);
+              break;
+            case 'changeUsername':
+              handleChangeUsername(e);
+              break;
+            default:
+              console.info('invalid action');
+              break;
+          }
+        }}
+      >
         <p className="modal__text">{text}</p>
         <div className="modal__input">
           <span className="modal__placeholder">@</span>
