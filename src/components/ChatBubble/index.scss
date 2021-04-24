@@ -1,13 +1,8 @@
 @import '../../index.scss';
 
 .chatbubble {
-  // padding: 0 16px;
   padding: 0 6vw;
   margin-bottom: 12px;
-  // width: 100%;
-
-  // @media (min-width: 595px) {
-  // }
 
   &.me {
     .chatbubble__bubble {
@@ -16,7 +11,7 @@
       border-radius: 8px 0 8px 8px;
       .chatbubble__bubble__tail {
         left: auto;
-        top: -1.7px;
+        top: -1px;
         right: -7px;
         transform: scaleX(-1);
         #tail-fill {
@@ -41,7 +36,7 @@
     &__tail {
       position: absolute;
       left: -7px;
-      top: -1.7px;
+      top: -1px;
     }
 
     &__name {
