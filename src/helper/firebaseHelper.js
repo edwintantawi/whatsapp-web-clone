@@ -1,6 +1,6 @@
 import firebase, { db } from 'services/firebase';
 
-const getRoomById = (roomid) => {
+export const getRoomById = (roomid) => {
   return db.collection('rooms').doc(roomid);
 };
 
@@ -8,43 +8,87 @@ export const getRoomMessages = (roomid) => {
   return getRoomById(roomid).collection('messages').orderBy('timestamp', 'asc');
 };
 
+// export const getRoom = (roomid, profile, friends) => {
+//   return new Promise((resolve) => {
+//     getRoomById(roomid).onSnapshot((snapshot) => {
+//       const roomData = snapshot.data();
+//       if (roomData?.isgroup) {
+//         resolve(roomData);
+//       } else {
+//         // split url room id to get member uid's
+//         const roomMembers = roomid.split('_');
+//         let roomFriendUid = '';
+//         let friendUidList = [];
+//         // check if member from room id is not self, its your friend
+//         roomMembers.forEach((member) => {
+//           member !== profile.uid && (roomFriendUid = member);
+//         });
+//         // get all friendlist uid
+//         friends.forEach((friend) => {
+//           friendUidList.push(friend.uid);
+//         });
+//         // create room if not exist
+//         createRoom(roomid, roomMembers);
+//         // set the room header
+//         getFriendData(roomFriendUid).then((friendData) => {
+//           const roomFriendData = {
+//             avatar: friendData.avatar,
+//             name: friendData.displayname,
+//             uid: friendData.uid,
+//             newFriend: !friendUidList.includes(friendData.uid),
+//           };
+//           resolve(roomFriendData);
+//         });
+//       }
+//     });
+//   });
+// };
+
 export const getRoomInfo = (roomid, profile, friends) => {
-  return new Promise((resolve) => {
-    getRoomById(roomid).onSnapshot((snapshot) => {
-      const roomData = snapshot.data();
-      if (roomData?.isgroup) {
-        resolve(roomData);
-      } else {
-        // split url room id to get member uid's
-        const roomMembers = roomid.split('_');
-        let roomFriendUid = '';
-        let friendUidList = [];
+  // split url room id to get member uid's
+  const roomMembers = roomid.split('_');
+  let roomFriendUid = '';
+  let roomMeUid = '';
+  let friendUidList = [];
+  let isRoomValid = false;
 
-        // check if member from room id is not self, its your friend
-        roomMembers.forEach((member) => {
-          member !== profile.uid && (roomFriendUid = member);
-        });
+  // check if member from room id is not self, its your friend
+  roomMembers.forEach((member) => {
+    member !== profile.uid ? (roomFriendUid = member) : (roomMeUid = member);
+  });
 
-        // get all friendlist uid
-        friends.forEach((friend) => {
-          friendUidList.push(friend.uid);
-        });
+  // get all friendlist uid
+  friends.forEach((friend) => {
+    friendUidList.push(friend.uid);
+    if (friend.uid === roomFriendUid) {
+      isRoomValid = true;
+    }
+  });
 
-        // create room if not exist
-        createRoom(roomid, roomMembers);
+  if (roomMeUid !== profile.uid) {
+    isRoomValid = false;
+  }
 
-        // set the room header
-        getFriendData(roomFriendUid).then((friendData) => {
-          const roomFriendData = {
-            avatar: friendData.avatar,
-            name: friendData.displayname,
-            uid: friendData.uid,
-            newFriend: !friendUidList.includes(friendData.uid),
-          };
-          resolve(roomFriendData);
-        });
-      }
-    });
+  // create room if not exist and valid
+  if (isRoomValid) {
+    createRoom(roomid, roomMembers, profile, friends);
+  }
+  // set the room header by friend
+  return getFriendData(roomFriendUid).then((friendData) => {
+    const roomFriendData = {
+      avatar: friendData.avatar,
+      name: friendData.displayname,
+      uid: friendData.uid,
+      newFriend: !friendUidList.includes(friendData.uid),
+    };
+
+    if (roomMembers[0] === roomMembers[1]) {
+      throw new Error('invalid room url');
+    }
+    if (!isRoomValid) {
+      throw new Error('invalid room url');
+    }
+    return roomFriendData;
   });
 };
 
@@ -54,10 +98,11 @@ const getFriendData = async (uid) => {
   return friendData.data();
 };
 
-const createRoom = async (roomid, roomMembers) => {
+const createRoom = async (roomid, roomMembers, profile, friends) => {
   const currentRoom = db.collection('rooms').doc(roomid);
   const doc = await currentRoom.get();
 
+  console.warn('Valid Rom');
   if (!doc.exists) {
     db.collection('rooms').doc(roomid).set({
       members: roomMembers,

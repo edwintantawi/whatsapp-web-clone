@@ -1,11 +1,12 @@
 // React
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 // context
 import { useStateValue } from 'context/stateProvider';
 import { actionTypes } from 'context/reducer';
 // Helper
 import {
+  getRoomById,
   getRoomInfo,
   getRoomMessages,
   addFriend,
@@ -28,10 +29,11 @@ const MainChat = () => {
   const { roomid } = useParams();
   const [roomInfo, setRoomInfo] = useState('');
   const [messages, setMessages] = useState([]);
-  const [{ profile, inChat, friends }, dispatch] = useStateValue();
   const [input, setInput] = useState('');
+  const [{ profile, inChat, friends }, dispatch] = useStateValue();
   const chatArea = useRef(null);
   const inputArea = useRef(null);
+  const history = useHistory();
 
   useEffect(() => {
     chatArea.current.scrollTo(0, chatArea.current.scrollHeight + 62);
@@ -42,6 +44,7 @@ const MainChat = () => {
       inputArea.current.focus();
     };
     document.addEventListener('keypress', inputFocus);
+
     return () => {
       document.removeEventListener('keypress', inputFocus);
     };
@@ -49,10 +52,26 @@ const MainChat = () => {
 
   useEffect(() => {
     console.info('MainChat effect : get Room Info');
-    getRoomInfo(roomid, profile, friends).then((roomHeader) => {
-      setRoomInfo(roomHeader);
+    const un_getRoom = getRoomById(roomid).onSnapshot((snapshot) => {
+      const roomData = snapshot.data();
+      if (roomData?.isgroup) {
+        setRoomInfo(roomData);
+      } else {
+        getRoomInfo(roomid, profile, friends)
+          .then((roomData) => {
+            setRoomInfo(roomData);
+          })
+          .catch((error) => {
+            console.error('invalid room', error);
+            history.push('/room');
+          });
+      }
     });
-  }, [roomid, friends, profile]);
+
+    return () => {
+      un_getRoom();
+    };
+  }, [roomid, friends, profile, history]);
 
   useEffect(() => {
     console.info('MainChat effect : get Room Messages');
