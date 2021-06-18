@@ -17,6 +17,7 @@ export const actionTypes = {
   SET_INCHAT: 'SET_INCHAT',
   SET_PROFILE: 'SET_PROFILE',
   SET_FRIENDS: 'SET_FRIENDS',
+  REMOVE_USER: 'REMOVE_USER',
 };
 
 const reducer = (state, action) => {
@@ -54,6 +55,9 @@ const reducer = (state, action) => {
         ...state,
         friends: action.friends,
       };
+
+    case actionTypes.REMOVE_USER:
+      return initialState;
 
     default:
       return state;
