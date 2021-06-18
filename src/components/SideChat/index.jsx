@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import { Avatar, Button, IconButton } from '@material-ui/core';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import ChatIcon from '@material-ui/icons/Chat';
@@ -6,7 +7,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
 import ChatChannel from 'components/ChatChannel';
 import CreateIcon from '@material-ui/icons/Create';
-import { db } from 'services/firebase';
+import firebase, { db } from 'services/firebase';
 import { useStateValue } from 'context/stateProvider';
 import './index.scss';
 
@@ -18,6 +19,7 @@ import ActionButton from 'components/ActionButton';
 const SideChat = () => {
   const [rooms, setRooms] = useState([]);
   const [{ inChat, profile, friends }, dispatch] = useStateValue();
+  const history = useHistory();
 
   useEffect(() => {
     console.info('SideChat effect 1');
@@ -84,6 +86,17 @@ const SideChat = () => {
         // pop up friend list
 
         // click some friends and create a private chat
+        break;
+      case 'LOGOUT':
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            dispatch({
+              type: actionTypes.REMOVE_USER,
+            });
+            history.push('/');
+          });
         break;
       default:
         break;
@@ -190,8 +203,11 @@ const SideChat = () => {
         <div className="profile">
           <div
             className="profile__avatar"
-            style={{ padding: '28px 0', display: 'grid', placeItems: 'center' }}
-          >
+            style={{
+              padding: '28px 0',
+              display: 'grid',
+              placeItems: 'center',
+            }}>
             <Avatar
               src={profile.avatar}
               style={{ width: '200px', height: '200px' }}
