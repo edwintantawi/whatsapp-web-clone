@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStateValue } from 'context/stateProvider';
-import { auth, db, provider } from 'services/firebase';
+import firebase, { auth, db, provider } from 'services/firebase';
 import { actionTypes } from 'context/reducer';
 
 import './index.scss';
@@ -58,24 +58,25 @@ const Auth = () => {
     }
   };
 
+  const handleLoginClick = () => {
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+      auth
+        .signInWithPopup(provider)
+        .then((results) => {
+          createUser(results.user);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+  };
+
   return (
     <div className="login-buttons">
       <div className="wrap">
         <h1>Whatsapp Web Clone</h1>
         <p>Powered by: ReactJS, MaterialUI, Firebase</p>
-        <button
-          className="login-provider-button"
-          onClick={() => {
-            auth
-              .signInWithPopup(provider)
-              .then((results) => {
-                createUser(results.user);
-              })
-              .catch((error) => {
-                console.error(error);
-              });
-          }}
-        >
+        <button className="login-provider-button" onClick={handleLoginClick}>
           <img
             src="https://img.icons8.com/fluent/28/000000/google-logo.png"
             alt="google auth"
