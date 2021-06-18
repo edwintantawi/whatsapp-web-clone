@@ -50,7 +50,7 @@ export const getRoomInfo = (roomid, profile, friends) => {
   let roomFriendUid = '';
   let roomMeUid = '';
   let friendUidList = [];
-  let isRoomValid = false;
+  // let isRoomValid = false;
 
   // check if member from room id is not self, its your friend
   roomMembers.forEach((member) => {
@@ -60,36 +60,79 @@ export const getRoomInfo = (roomid, profile, friends) => {
   // get all friendlist uid
   friends.forEach((friend) => {
     friendUidList.push(friend.uid);
-    if (friend.uid === roomFriendUid) {
-      isRoomValid = true;
-    }
+    // if (friend.uid === roomFriendUid) {
+    //   isRoomValid = true;
+    // }
   });
 
-  if (roomMeUid !== profile.uid) {
-    isRoomValid = false;
-  }
+  // if (roomMeUid !== profile.uid) {
+  //   isRoomValid = false;
+  // }
+  return validationUrlRoom(
+    profile,
+    friendUidList,
+    roomid,
+    roomMeUid,
+    roomFriendUid
+  )
+    .then((roomId) => {
+      createRoom(roomId, roomMembers, profile, friends);
+      return getFriendData(roomFriendUid).then((friendData) => {
+        const roomFriendData = {
+          avatar: friendData.avatar,
+          name: friendData.displayname,
+          uid: friendData.uid,
+          newFriend: !friendUidList.includes(friendData.uid),
+        };
+        return roomFriendData;
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
 
-  // create room if not exist and valid
-  if (isRoomValid) {
-    createRoom(roomid, roomMembers, profile, friends);
-  }
-  // set the room header by friend
-  return getFriendData(roomFriendUid).then((friendData) => {
-    const roomFriendData = {
-      avatar: friendData.avatar,
-      name: friendData.displayname,
-      uid: friendData.uid,
-      newFriend: !friendUidList.includes(friendData.uid),
-    };
+const validationUrlRoom = async (
+  profile,
+  friendUidList,
+  roomid,
+  myUid,
+  friendUid
+) => {
+  // myuid !== frienduid
+  if (myUid !== friendUid) {
+    // myUid === profile.uid
+    if (myUid === profile.uid) {
+      // friendUid in friendlistUid
+      if (friendUidList.includes(friendUid)) {
+        // check is room already?
+        const room = await getRoomById(roomid);
+        const roomData = await room.get();
+        if (roomData.exists) {
+          console.warn('its a valid room url :', roomData.exists);
+          return roomid;
+        }
 
-    if (roomMembers[0] === roomMembers[1]) {
-      throw new Error('invalid room url');
+        const splitRoomId = roomid.split('_');
+        const roomFlip = await getRoomById(
+          `${splitRoomId[1]}_${splitRoomId[0]}`
+        );
+
+        const roomDataFlip = await roomFlip.get();
+        if (roomDataFlip.exists) {
+          console.warn(
+            'oh no its not valid, and we can Flip it :',
+            roomData.exists
+          );
+          return `${splitRoomId[1]}_${splitRoomId[0]}`;
+        }
+        throw new Error('invalid room url : roomNot Exist');
+      }
+      throw new Error('invalid room url : its not friend');
     }
-    if (!isRoomValid) {
-      throw new Error('invalid room url');
-    }
-    return roomFriendData;
-  });
+    throw new Error('invalid room url : its not you room');
+  }
+  throw new Error('invalid room url : you chat with you');
 };
 
 const getFriendData = async (uid) => {
@@ -98,7 +141,7 @@ const getFriendData = async (uid) => {
   return friendData.data();
 };
 
-const createRoom = async (roomid, roomMembers, profile, friends) => {
+const createRoom = async (roomid, roomMembers) => {
   const currentRoom = db.collection('rooms').doc(roomid);
   const doc = await currentRoom.get();
 
